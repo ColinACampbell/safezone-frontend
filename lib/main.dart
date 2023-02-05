@@ -103,7 +103,8 @@ class _MapViewState extends State<MapView> {
                 if (snapshot.hasData) {
                   Position pos = snapshot.data as Position;
                   return Expanded(
-                      child: Map(lat: pos.latitude, long: pos.longitude));
+                      child:
+                          Map(initLat: pos.latitude, initLong: pos.longitude));
                 } else
                   return Container(
                     padding: EdgeInsets.all(10),
@@ -127,7 +128,17 @@ class _MapViewState extends State<MapView> {
                   },
                   child: Text("Get Postion"),
                 ),
-                Text("Lat is ${_lat}, Long is ${_long}")
+                StreamBuilder(
+                  stream: Geolocator.getPositionStream(),
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasData) {
+                      Position pos = snapshot.data as Position;
+                      return showCoordinates(pos.latitude, pos.longitude);
+                    } else {
+                      return showCoordinates(_lat, _long);
+                    }
+                  }),
+                )
               ],
             )
           ],
@@ -135,46 +146,60 @@ class _MapViewState extends State<MapView> {
       ),
     );
   }
+
+  showCoordinates(lat, long) {
+    return Text("Lat is $lat, Long is $long");
+  }
 }
 
 class Map extends StatelessWidget {
-  double lat, long;
-  Map({required this.lat, required this.long});
+  double initLat, initLong;
+  Map({required this.initLat, required this.initLong});
 
   @override
   Widget build(BuildContext context) {
-    print(lat);
-    print(long);
+    print(initLat);
+    print(initLong);
 
-    return FlutterMap(
-      options: MapOptions(
-          onTap: (p, l) async {
-            print(p.relative?.dx);
-            print(p.global.dx);
-          },
-          center: LatLng(lat, long),
-          zoom: 17.0,
-          maxZoom: 17),
-      layers: [
-        TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']),
-        MarkerLayerOptions(
-          markers: [
-            Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng(lat, long),
-              builder: (ctx) => Container(
-                child: Icon(
-                  Icons.location_on,
-                  color: Colors.red,
+    return StreamBuilder(builder: (context, snapshot) {
+      double long, lat;
+      if (snapshot.hasData) {
+        Position pos = snapshot.data as Position;
+        long = pos.longitude;
+        lat = pos.latitude;
+        print(lat);
+        print(long);
+      } else {
+        long = initLong;
+        lat = initLat;
+      }
+      return FlutterMap(
+        options: MapOptions(
+            onTap: (p, l) async {},
+            center: LatLng(lat, long),
+            zoom: 17.0,
+            maxZoom: 17),
+        layers: [
+          TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c']),
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(lat, long),
+                builder: (ctx) => Container(
+                  child: Icon(
+                    Icons.location_on,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
-      ],
-    );
+              )
+            ],
+          ),
+        ],
+      );
+    });
   }
 }
