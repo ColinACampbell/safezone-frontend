@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
@@ -62,7 +63,7 @@ class CustomerLoginPage extends ConsumerWidget {
                     AppTextField(
                       hintText: "Email",
                       onSaved: (String? val) {
-                        this.email = val!;
+                        email = val!;
                       },
                     ),
                     const SizedBox(height: 24),
@@ -70,13 +71,18 @@ class CustomerLoginPage extends ConsumerWidget {
                       hintText: "Password",
                       isPassword: true,
                       onSaved: (String? val) {
-                        this.password = val!;
+                        password = val!;
                       },
                     ),
                     const SizedBox(height: 24),
-                    AppButton(onTap: () {
+                    AppButton(onTap: () async {
                       _loginFormKey.currentState!.save();
-                      ref.read(userProvider).login(email, password);
+                      try {
+                        await ref.read(userProvider).login(email, password);
+                      } on APIExecption catch (e) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(e.message)));
+                      }
                     })
                   ],
                 ),
