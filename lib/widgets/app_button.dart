@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
+  void Function() onTap;
+  AppButton({required this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         width: 182,
         decoration: const BoxDecoration(

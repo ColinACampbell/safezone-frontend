@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
   final String hintText;
   bool isPassword = false;
+  void Function(String?) onSaved;
 
-  AppTextField({Key? key, required this.hintText, this.isPassword = false})
+  AppTextField(
+      {Key? key,
+      required this.hintText,
+      this.isPassword = false,
+      required this.onSaved})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onSaved: onSaved,
       decoration: InputDecoration(
           border: const OutlineInputBorder(
               borderSide: BorderSide.none,
