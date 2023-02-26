@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
+import 'package:safezone_frontend/user/pages/user_tab.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
-  UserLoginPage.ROUTE_NAME: (context) => UserLoginPage(),
+  UserLoginPage.route_name: (context) => UserLoginPage(),
+  UserTabPage.route_name: (context) => const UserTabPage()
 };
 
 // TODO: Convert to singleton
+// TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
   final apiURL = "http://192.168.100.195:8080";

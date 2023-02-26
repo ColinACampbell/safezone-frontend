@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
+import 'package:safezone_frontend/user/pages/user_tab.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 // TODO : Add form validation
 class UserLoginPage extends ConsumerWidget {
-  static final String ROUTE_NAME = "/customer_login";
+  static const String route_name = "/customer_login";
   final _loginFormKey = GlobalKey<FormState>();
 
   String email = "";
@@ -79,6 +80,8 @@ class UserLoginPage extends ConsumerWidget {
                       _loginFormKey.currentState!.save();
                       try {
                         await ref.read(userProvider).login(email, password);
+                        Navigator.of(context)
+                            .popAndPushNamed(UserTabPage.route_name);
                       } on APIExecption catch (e) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(e.message)));

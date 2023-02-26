@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
-  void Function() onTap;
-  AppButton({required this.onTap});
+  Function() onTap;
+  double width;
+  AppButton({required this.onTap, this.width = 182});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
-        width: 182,
+      child: Ink(
+        width: width,
         decoration: const BoxDecoration(
             color: const Color.fromRGBO(233, 69, 96, 1),
             borderRadius: const BorderRadius.all(Radius.circular(6))),

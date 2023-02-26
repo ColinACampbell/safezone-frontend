@@ -4,7 +4,7 @@ import 'package:safezone_frontend/repositories/user_repository.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepository _userRepository;
-  late final User currentUser;
+  User? currentUser;
 
   UserProvider(this._userRepository);
 

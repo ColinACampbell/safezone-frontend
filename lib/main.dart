@@ -38,7 +38,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: appRoutes,
-      initialRoute: UserLoginPage.ROUTE_NAME,
+      initialRoute: UserLoginPage.route_name,
     );
   }
 }
