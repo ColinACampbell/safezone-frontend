@@ -8,7 +8,7 @@ import 'package:safezone_frontend/user/pages/user_tab.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
-  UserTabPage.route_name: (context) => const UserTabPage()
+  UserTabPage.route_name: (context) => UserTabPage()
 };
 
 // TODO: Convert to singleton
