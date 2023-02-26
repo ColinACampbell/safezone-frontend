@@ -6,7 +6,7 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:safezone_frontend/customer/pages/customer_login.dart';
+import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:safezone_frontend/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -38,7 +38,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: appRoutes,
-      initialRoute: CustomerLoginPage.ROUTE_NAME,
+      initialRoute: UserLoginPage.ROUTE_NAME,
     );
   }
 }

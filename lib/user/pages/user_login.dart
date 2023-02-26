@@ -6,7 +6,7 @@ import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 // TODO : Add form validation
-class CustomerLoginPage extends ConsumerWidget {
+class UserLoginPage extends ConsumerWidget {
   static final String ROUTE_NAME = "/customer_login";
   final _loginFormKey = GlobalKey<FormState>();
 

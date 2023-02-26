@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:safezone_frontend/customer/pages/customer_login.dart';
+import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
-  CustomerLoginPage.ROUTE_NAME: (context) => CustomerLoginPage(),
+  UserLoginPage.ROUTE_NAME: (context) => UserLoginPage(),
 };
 
 // TODO: Convert to singleton
