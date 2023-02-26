@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 // TODO : Add form validation
-class CustomerLoginPage extends StatelessWidget {
+class CustomerLoginPage extends ConsumerWidget {
   static final String ROUTE_NAME = "/customer_login";
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -11,7 +13,7 @@ class CustomerLoginPage extends StatelessWidget {
   String password = "";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Scaffold(
         body: Center(
       child: Container(
@@ -74,7 +76,7 @@ class CustomerLoginPage extends StatelessWidget {
                     const SizedBox(height: 24),
                     AppButton(onTap: () {
                       _loginFormKey.currentState!.save();
-                      print(email + password);
+                      ref.read(userProvider).login(email, password);
                     })
                   ],
                 ),
