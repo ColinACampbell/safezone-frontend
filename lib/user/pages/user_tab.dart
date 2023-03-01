@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/user/pages/user_group.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
@@ -15,6 +16,13 @@ class UserTabPage extends ConsumerStatefulWidget {
 
 class UserTabPageState extends ConsumerState {
   int currentIdx = 0;
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

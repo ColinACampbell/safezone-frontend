@@ -6,6 +6,22 @@ import 'package:safezone_frontend/providers/providers.dart';
 class UserGroupPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(child: Text("Welcome to my group"));
+    return Column(
+      children: [
+        Container(
+          height: 63,
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+              const Text("My Groups"),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.account_circle))
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
