@@ -5,8 +5,8 @@ import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:safezone_frontend/utils.dart';
 
 void main() {
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom]);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+  //     overlays: [SystemUiOverlay.bottom]);
   runApp(ProviderScope(child: App()));
 }
 

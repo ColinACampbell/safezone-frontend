@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserHomePage extends StatefulWidget {
+  const UserHomePage({Key? key}) : super(key: key);
   @override
   State<UserHomePage> createState() => _MapViewState();
 }

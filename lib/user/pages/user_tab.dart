@@ -18,7 +18,11 @@ class UserTabPageState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> screens = [UserHomePage(), UserGroupPage(), UserSOSPage()];
+    List<Widget> screens = [
+      const UserHomePage(),
+      UserGroupPage(),
+      UserSOSPage()
+    ];
 
     return Scaffold(
       body: screens[currentIdx],
@@ -30,7 +34,10 @@ class UserTabPageState extends ConsumerState {
             });
           },
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
             BottomNavigationBarItem(icon: Icon(Icons.people), label: "Groups"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.phone_locked), label: "SOS")
