@@ -34,6 +34,12 @@ class UserTabPageState extends ConsumerState {
 
     return Scaffold(
       body: screens[currentIdx],
+      floatingActionButton: screens[currentIdx] is UserGroupPage
+          ? FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {},
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIdx,
           onTap: (index) {
