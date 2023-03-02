@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:safezone_frontend/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:safezone_frontend/user/pages/user_addConfidant.dart';
 
 void main() {
   runApp(ProviderScope(child: App()));
@@ -38,7 +39,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: appRoutes,
-      initialRoute: UserLoginPage.route_name,
+      initialRoute: AddConfidantPage.route_name,
     );
   }
 }
