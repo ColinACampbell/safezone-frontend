@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class AddConfidantPage extends StatelessWidget {
@@ -38,12 +39,7 @@ class AddConfidantPage extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
                             onPressed: () async {
-                              await FlutterBarcodeScanner.scanBarcode(
-                                '#ff6666',
-                                'Cancel',
-                                true,
-                                ScanMode.BARCODE,
-                              );
+                              await barcodeScanner();
                             },
                             child: const Text('Scan Barcode'),
                             style: ElevatedButton.styleFrom(
@@ -51,5 +47,19 @@ class AddConfidantPage extends StatelessWidget {
                                 backgroundColor: Color(0xFF0F3460))))))
           ],
         ));
+  }
+
+  Future barcodeScanner() async {
+    String scanResult;
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.BARCODE,
+      );
+    } on PlatformException {
+      scanResult = 'Nan';
+    }
   }
 }
