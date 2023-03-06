@@ -18,15 +18,36 @@ class ServerClient {
   final apiURL = "http://192.168.100.195:8080";
   final header = {};
 
-  Future<Map<String, dynamic>> post(
-      String endPoint, Map<String, dynamic> body) async {
+  buildHeaders({String? token}) {
+    final header = {
+      "content-type": "application/json",
+    };
+    if (token != null) {
+      header["Authorization"] = "Bearer $token";
+    }
+    return header;
+  }
+
+  Future<dynamic> post(String endPoint, Map<String, dynamic> body,
+      {String? token}) async {
     var resp = await httpClient.post(
       Uri.parse("$apiURL$endPoint"),
-      headers: {
-        "content-type": "application/json",
-        //"Accept": "application/json"
-      },
+      headers: buildHeaders(token: token),
       body: json.encode(body),
+    );
+
+    if (resp.statusCode >= 400) {
+      // ignore: avoid_print
+      print(resp.body);
+      throw APIExecption(json.decode(resp.body)['detail']);
+    }
+    return jsonDecode(resp.body);
+  }
+
+  Future<dynamic> get(String endPoint, {String? token}) async {
+    var resp = await httpClient.get(
+      Uri.parse("$apiURL$endPoint"),
+      headers: buildHeaders(token: token),
     );
 
     if (resp.statusCode >= 400) {

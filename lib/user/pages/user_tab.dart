@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:safezone_frontend/models/exception.dart';
+import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/user_group.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
 import 'package:safezone_frontend/user/pages/user_sos.dart';
@@ -101,9 +103,15 @@ class UserTabPageState extends ConsumerState {
                 Expanded(
                     child: AppButton(
                   text: "Create Group",
-                  onTap: () {
+                  onTap: () async {
                     _form.currentState!.save();
-                    print(groupName);
+                    try {
+                      await ref.read(groupsProvider).createGroup(groupName);
+                      Navigator.pop(context);
+                    } on APIExecption catch (e) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.message)));
+                    }
                   },
                   width: 100,
                 ))
