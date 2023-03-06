@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/user/pages/user_group.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
 import 'package:safezone_frontend/user/pages/user_sos.dart';
+import 'package:safezone_frontend/widgets/app_button.dart';
+import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 class UserTabPage extends ConsumerStatefulWidget {
   static const String route_name = "/user_tab_page";
@@ -20,7 +22,6 @@ class UserTabPageState extends ConsumerState {
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-
     super.initState();
   }
 
@@ -37,7 +38,18 @@ class UserTabPageState extends ConsumerState {
       floatingActionButton: screens[currentIdx] is UserGroupPage
           ? FloatingActionButton(
               child: const Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                    isScrollControlled:
+                        true, // take up the full height required
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    context: context,
+                    builder: (context) {
+                      return buildCreateGroupBottomSheetModal();
+                    });
+              },
             )
           : null,
       bottomNavigationBar: BottomNavigationBar(
@@ -56,6 +68,50 @@ class UserTabPageState extends ConsumerState {
             BottomNavigationBarItem(
                 icon: Icon(Icons.phone_locked), label: "SOS")
           ]),
+    );
+  }
+
+  // https://stackoverflow.com/questions/53869078/how-to-move-bottomsheet-along-with-keyboard-which-has-textfieldautofocused-is-t
+  Widget buildCreateGroupBottomSheetModal() {
+    String groupName = "";
+    final _form = GlobalKey<FormState>();
+
+    return Container(
+      //padding: const EdgeInsets.all(15),
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          left: 10,
+          top: 10,
+          right: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Form(
+              key: _form,
+              child: AppTextField(
+                  hintText: "Enter Group Name",
+                  autoFocus: true,
+                  onSaved: (val) {
+                    groupName = val!;
+                  })),
+          Container(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                Expanded(
+                    child: AppButton(
+                  text: "Create Group",
+                  onTap: () {
+                    _form.currentState!.save();
+                    print(groupName);
+                  },
+                  width: 100,
+                ))
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
