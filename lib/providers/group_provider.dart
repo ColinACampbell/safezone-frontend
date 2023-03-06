@@ -20,11 +20,12 @@ class GroupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  fetchGroups() async {
+  Future<List<Group>> fetchGroups() async {
     var newGroups =
         await _groupRepository.fetchgroups(_userProvider.currentUser!.token!);
     groups = [];
     groups.addAll(newGroups);
     notifyListeners();
+    return groups;
   }
 }
