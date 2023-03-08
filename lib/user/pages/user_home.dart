@@ -21,7 +21,11 @@ class _HomePageState extends State<UserHomePage> {
   double _long = 0;
 
   @override
-  void initState() {}
+  void initState() {
+    // Future.delayed(Duration.zero, () async {
+    //   Position position = await _determinePosition();
+    // });
+  }
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -69,7 +73,7 @@ class _HomePageState extends State<UserHomePage> {
       home: Scaffold(
         body: Column(
           children: [
-            Expanded(child: AppMap(initLat: 0, initLong: 0)),
+            //Expanded(child: AppMap(initLat: 0, initLong: 0)),
           ],
         ),
       ),

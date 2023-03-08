@@ -41,8 +41,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5))),
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
                 width: MediaQuery.of(context).size.width,
                 height: 300,
               )
