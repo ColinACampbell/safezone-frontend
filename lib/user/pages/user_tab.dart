@@ -31,13 +31,13 @@ class UserTabPageState extends ConsumerState {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       const UserHomePage(),
-      UserGroupPage(),
+      UserGroupsPage(),
       UserSOSPage()
     ];
 
     return Scaffold(
       body: screens[currentIdx],
-      floatingActionButton: screens[currentIdx] is UserGroupPage
+      floatingActionButton: screens[currentIdx] is UserGroupsPage
           ? FloatingActionButton(
               child: const Icon(Icons.add),
               onPressed: () {
