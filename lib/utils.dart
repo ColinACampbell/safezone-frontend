@@ -6,6 +6,7 @@ import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
@@ -17,8 +18,15 @@ Map<String, WidgetBuilder> appRoutes = {
 // TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
-  final apiURL = "http://localhost:8080";
+  final baseURl = "192.168.100.195";
+  late String apiURL, socketURL;
+
   final header = {};
+
+  ServerClient() {
+    apiURL = "http://$baseURl:8080";
+    socketURL = "ws://$baseURl:8080";
+  }
 
   buildHeaders({String? token}) {
     final header = {
@@ -28,6 +36,14 @@ class ServerClient {
       header["Authorization"] = "Bearer $token";
     }
     return header;
+  }
+
+  joinGroupSocketRoom(String groupName) {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://localhost:8080/group/$groupName'),
+    );
+
+    return channel;
   }
 
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,

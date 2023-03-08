@@ -21,15 +21,7 @@ class _HomePageState extends State<UserHomePage> {
   double _long = 0;
 
   @override
-  void initState() {
-    final channel = WebSocketChannel.connect(
-      Uri.parse('ws://localhost:8080/group/ss'),
-    );
-
-    channel.stream.listen((event) {
-      print(event as String);
-    });
-  }
+  void initState() {}
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -63,6 +55,8 @@ class _HomePageState extends State<UserHomePage> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+    print(await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high));
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition(
@@ -75,24 +69,7 @@ class _HomePageState extends State<UserHomePage> {
       home: Scaffold(
         body: Column(
           children: [
-            FutureBuilder(
-              future: _determinePosition(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  Position pos = snapshot.data as Position;
-                  return Expanded(
-                      child: AppMap(
-                          initLat: pos.latitude, initLong: pos.longitude));
-                } else {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    child: CircularProgressIndicator(),
-                    width: MediaQuery.of(context).size.width * .23,
-                    height: MediaQuery.of(context).size.width * .23,
-                  );
-                }
-              },
-            ),
+            Expanded(child: AppMap(initLat: 0, initLong: 0)),
           ],
         ),
       ),
