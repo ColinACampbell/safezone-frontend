@@ -38,9 +38,13 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
             children: [
               AppMap(initLat: 0, initLong: 0),
               Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(5))),
                 width: MediaQuery.of(context).size.width,
                 height: 300,
-                color: Colors.white,
               )
             ],
           ))
