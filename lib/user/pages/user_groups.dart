@@ -7,6 +7,7 @@ import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 class UserGroupsPage extends ConsumerStatefulWidget {
+  const UserGroupsPage({Key? key}) : super(key: key);
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return UserGroupsState();
@@ -14,12 +15,40 @@ class UserGroupsPage extends ConsumerStatefulWidget {
 }
 
 class UserGroupsState extends ConsumerState<UserGroupsPage> {
+  List<Group> groups = [];
+
+  @override
   initState() {
     super.initState();
-    ref.read(groupsProvider).fetchGroups();
+    Future.delayed(Duration.zero, () {
+      ref.read(groupsProvider).fetchGroups();
+    });
   }
 
-  buildGroupCard(Group group) {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CustomAppBar(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: AppTextField(hintText: "Search", onSaved: (val) {}),
+        ),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              ref.read(groupsProvider).fetchGroups();
+            },
+            child: GroupList(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class GroupList extends ConsumerWidget {
+  buildGroupCard(BuildContext context, Group group) {
     return GestureDetector(
       onTap: () {
         // Open the group and pass it in into the page
@@ -59,39 +88,13 @@ class UserGroupsState extends ConsumerState<UserGroupsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomAppBar(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: AppTextField(hintText: "Search", onSaved: (val) {}),
-        ),
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              ref.read(groupsProvider).fetchGroups();
-            },
-            child: FutureBuilder(
-              future: Future.value(ref.watch(groupsProvider).groups),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final groups = snapshot.data as List<Group>;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final groupContainer = ref.watch(groupsProvider);
 
-                  return ListView.builder(
-                    itemCount: groups.length,
-                    itemBuilder: (context, idx) {
-                      return buildGroupCard(groups[idx]);
-                    },
-                  );
-                } else {
-                  return Text("Loading");
-                }
-              },
-            ),
-          ),
-        )
-      ],
-    );
+    return ListView.builder(
+        itemCount: groupContainer.groups.length,
+        itemBuilder: (context, idx) {
+          return buildGroupCard(context, groupContainer.groups[idx]);
+        });
   }
 }

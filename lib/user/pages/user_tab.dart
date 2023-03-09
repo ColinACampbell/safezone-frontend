@@ -31,7 +31,7 @@ class UserTabPageState extends ConsumerState {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       const UserHomePage(),
-      UserGroupsPage(),
+      const UserGroupsPage(),
       UserSOSPage()
     ];
 
