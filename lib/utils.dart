@@ -18,7 +18,7 @@ Map<String, WidgetBuilder> appRoutes = {
 // TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
-  final baseURl = "192.168.100.195";
+  final baseURl = "localhost";
   late String apiURL, socketURL;
 
   final header = {};
@@ -38,9 +38,9 @@ class ServerClient {
     return header;
   }
 
-  joinGroupSocketRoom(String groupName) {
+  WebSocketChannel joinGroupSocketRoom(String groupName) {
     final channel = WebSocketChannel.connect(
-      Uri.parse('ws://localhost:8080/group/$groupName'),
+      Uri.parse('ws://$baseURl:8080/group/$groupName'),
     );
 
     return channel;

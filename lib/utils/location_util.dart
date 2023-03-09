@@ -1,31 +1,31 @@
-// import 'package:location/location.dart';
+import 'package:location/location.dart';
 
-// class _LocationUtil {
-//   Future<Location> getLocation() async {
-//     Location location = new Location();
+class _LocationUtil {
+  Future<Location> getLocation() async {
+    Location location = new Location();
 
-//     bool _serviceEnabled;
-//     PermissionStatus _permissionGranted;
-//     LocationData _locationData;
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
 
-//     _serviceEnabled = await location.serviceEnabled();
-//     if (!_serviceEnabled) {
-//       _serviceEnabled = await location.requestService();
-//       if (!_serviceEnabled) {
-//         //return;
-//       }
-//     }
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        //return;
+      }
+    }
 
-//     _permissionGranted = await location.hasPermission();
-//     if (_permissionGranted == PermissionStatus.denied) {
-//       _permissionGranted = await location.requestPermission();
-//       if (_permissionGranted != PermissionStatus.granted) {
-//         //return;
-//       }
-//     }
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        //return;
+      }
+    }
 
-//     return location;
-//   }
-// }
+    return location;
+  }
+}
 
-// final locationUtil = _LocationUtil();
+final locationUtil = _LocationUtil();
