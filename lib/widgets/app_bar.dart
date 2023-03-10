@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
+  String title;
+  CustomAppBar({Key? key, required this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -10,8 +13,8 @@ class CustomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
-          const Text(
-            "My Groups",
+          Text(
+            title,
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
           IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle))

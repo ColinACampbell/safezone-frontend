@@ -29,7 +29,9 @@ class UserGroupsState extends ConsumerState<UserGroupsPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomAppBar(),
+        CustomAppBar(
+          title: "My Groups",
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: AppTextField(hintText: "Search", onSaved: (val) {}),
@@ -89,12 +91,22 @@ class GroupList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupContainer = ref.watch(groupsProvider);
+    return FutureBuilder(
+      future: Future.value(ref.watch(groupsProvider).groups),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final groups = snapshot.data as List<Group>;
 
-    return ListView.builder(
-        itemCount: groupContainer.groups.length,
-        itemBuilder: (context, idx) {
-          return buildGroupCard(context, groupContainer.groups[idx]);
-        });
+          return ListView.builder(
+            itemCount: groups.length,
+            itemBuilder: (context, idx) {
+              return buildGroupCard(context, groups[idx]);
+            },
+          );
+        } else {
+          return Text("Loading");
+        }
+      },
+    );
   }
 }

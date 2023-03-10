@@ -37,10 +37,14 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final group = ModalRoute.of(context)!.settings.arguments as Group;
+
     return Scaffold(
       body: Column(
         children: [
-          CustomAppBar(),
+          CustomAppBar(
+            title: group.name,
+          ),
           Expanded(
               child: Stack(
             alignment: Alignment.bottomCenter,
@@ -54,6 +58,12 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                         topRight: Radius.circular(10))),
                 width: MediaQuery.of(context).size.width,
                 height: 300,
+                child: Expanded(
+                    child: ListView.builder(itemBuilder: (context, idx) {
+                  return Container(
+                    child: Text(group.confidants[idx].details.firstname),
+                  );
+                })),
               )
             ],
           ))
