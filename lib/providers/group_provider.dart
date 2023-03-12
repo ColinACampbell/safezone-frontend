@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/models/group.dart';
-import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/providers/user_provider.dart';
 import 'package:safezone_frontend/repositories/group_repository.dart';
-import 'package:safezone_frontend/repositories/user_repository.dart';
+import 'package:safezone_frontend/utils.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class GroupProvider extends ChangeNotifier {
   final GroupRepository _groupRepository;
   final UserProvider _userProvider;
 
   List<Group> groups = [];
+  Map<String, WebSocketChannel> groupConnections = {};
 
   GroupProvider(this._groupRepository, this._userProvider);
 
@@ -27,5 +28,11 @@ class GroupProvider extends ChangeNotifier {
     groups.addAll(newGroups);
     notifyListeners();
     return groups;
+  }
+
+  connectToGroup(String groupName) {
+    final newChannel = serverClient.joinGroupSocketRoom(groupName);
+    groupConnections[groupName] = newChannel;
+    notifyListeners();
   }
 }

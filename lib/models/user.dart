@@ -18,3 +18,10 @@ class User {
         lastname = json['last_name'],
         email = json['email'];
 }
+
+class UserLocation {
+  final double lat, lon;
+  final int id;
+  final String name;
+  UserLocation(this.id, this.name, this.lat, this.lon);
+}

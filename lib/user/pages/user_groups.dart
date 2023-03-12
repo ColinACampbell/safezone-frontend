@@ -50,10 +50,13 @@ class UserGroupsState extends ConsumerState<UserGroupsPage> {
 }
 
 class GroupList extends ConsumerWidget {
-  buildGroupCard(BuildContext context, Group group) {
+  buildGroupCard(BuildContext context, WidgetRef ref, Group group) {
     return GestureDetector(
       onTap: () {
         // Open the group and pass it in into the page
+        ref
+            .read(groupsProvider)
+            .connectToGroup(group.name); // Create the socket connection
         Navigator.pushNamed(context, UserGroupPage.routeName, arguments: group);
       },
       child: Container(
@@ -100,7 +103,7 @@ class GroupList extends ConsumerWidget {
           return ListView.builder(
             itemCount: groups.length,
             itemBuilder: (context, idx) {
-              return buildGroupCard(context, groups[idx]);
+              return buildGroupCard(context, ref, groups[idx]);
             },
           );
         } else {

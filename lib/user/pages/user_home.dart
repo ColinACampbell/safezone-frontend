@@ -17,7 +17,8 @@ class _HomePageState extends State<UserHomePage> {
       home: Scaffold(
         body: Column(
           children: [
-            Expanded(child: AppMap(initLat: 0, initLong: 0)),
+            Expanded(
+                child: AppMap(locationsStream: null, initLat: 0, initLong: 0)),
           ],
         ),
       ),
