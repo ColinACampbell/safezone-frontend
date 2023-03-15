@@ -51,6 +51,50 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     });
   }
 
+  Widget buildConfidantCard(Confidant confidant) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+            ),
+          ),
+          Expanded(
+              child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${confidant.details.firstname} ${confidant.details.lastname}",
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  children: const [
+                    Icon(Icons.location_on),
+                    Text(
+                      "UWI, Mona",
+                      style: TextStyle(fontSize: 10),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = ModalRoute.of(context)!.settings.arguments as Group;
@@ -94,30 +138,26 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                 child: Column(
                   children: [
                     Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 10),
+                        margin:
+                            const EdgeInsets.only(top: 10, left: 20, right: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              child: Text("My Confidants"),
+                              child: Text(
+                                "My Confidants",
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                             TextButton(
-                                onPressed: () {
-                                  channel!.sink
-                                      .add(json.encode({"lat": 1, "long": 12}));
-                                },
-                                child: Text("Show All"))
+                                onPressed: () {}, child: Text("Show All"))
                           ],
                         )),
                     Expanded(
                         child: ListView.builder(
                             itemCount: group.confidants.length,
                             itemBuilder: (context, idx) {
-                              return Container(
-                                child: Text(
-                                    group.confidants[idx].details.firstname),
-                              );
+                              return buildConfidantCard(group.confidants[idx]);
                             }))
                   ],
                 ),

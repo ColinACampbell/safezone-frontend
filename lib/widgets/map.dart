@@ -24,12 +24,14 @@ class AppMap extends StatelessWidget {
           child: Column(
         children: [
           Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               width: 120,
               color: Colors.red,
-              child: Text(
-                userLocation.name,
-                style: const TextStyle(color: Colors.white),
+              child: Center(
+                child: Text(
+                  userLocation.name,
+                  style: const TextStyle(color: Colors.white),
+                ),
               )),
           const Icon(
             Icons.location_on,
