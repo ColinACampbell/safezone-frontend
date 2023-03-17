@@ -38,6 +38,7 @@ dependencies:
   web_socket_channel: ^2.3.0
   flutter_riverpod: ^1.0.1
   shared_preferences: ^2.0.18
+  geocoding: ^2.1.0
 
 dev_dependencies:
   flutter_test:

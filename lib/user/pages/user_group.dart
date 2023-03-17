@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
@@ -43,8 +45,11 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
       (await locationUtil.getLocationObject())
           .onLocationChanged
-          .listen((event) {
+          .listen((event) async {
         print("Location Changed to ${event.latitude}, ${event.longitude}");
+        // List<Placemark> placemarks =
+        //     await placemarkFromCoordinates(event.latitude!, event.longitude!);
+        // print(placemarks.length);
         groupChannel!.sink
             .add(locationUtil.getUserLocationData(currentUser, event));
       });
@@ -53,10 +58,10 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
   Widget buildConfidantCard(Confidant confidant) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
       padding: EdgeInsets.all(10),
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+          border: Border(bottom: BorderSide(color: Colors.grey, width: .5))),
       child: Row(
         children: [
           Container(
@@ -69,7 +74,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
           ),
           Expanded(
               child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -79,8 +84,13 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                       fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: const [
-                    Icon(Icons.location_on),
+                    Icon(
+                      Icons.location_on,
+                      size: 15,
+                    ),
                     Text(
                       "UWI, Mona",
                       style: TextStyle(fontSize: 10),
@@ -101,6 +111,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     final groupContainer = ref.watch(groupsProvider);
 
     final channel = groupContainer.groupConnections[group.name];
+    final broadcast =
+        groupContainer.groupConnections[group.name]!.stream.asBroadcastStream();
 
     return Scaffold(
       body: Column(
@@ -118,9 +130,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                     if (snapshot.hasData) {
                       LocationTuple location = snapshot.data as LocationTuple;
                       return AppMap(
-                          locationsStream: groupContainer
-                              .groupConnections[group.name]!.stream
-                              .asBroadcastStream(), // pass is the streams from the server
+                          locationsStream:
+                              broadcast, // pass is the streams from the server
                           initLat: location.locationData.latitude!,
                           initLong: location.locationData.longitude!);
                     } else {
@@ -153,12 +164,18 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                                 onPressed: () {}, child: Text("Show All"))
                           ],
                         )),
-                    Expanded(
-                        child: ListView.builder(
-                            itemCount: group.confidants.length,
-                            itemBuilder: (context, idx) {
-                              return buildConfidantCard(group.confidants[idx]);
-                            }))
+                    StreamBuilder(
+                        stream: broadcast,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) print(snapshot.data);
+                          return Expanded(
+                              child: ListView.builder(
+                                  itemCount: group.confidants.length,
+                                  itemBuilder: (context, idx) {
+                                    return buildConfidantCard(
+                                        group.confidants[idx]);
+                                  }));
+                        })
                   ],
                 ),
               )

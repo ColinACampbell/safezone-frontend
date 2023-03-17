@@ -57,8 +57,6 @@ class AppMap extends StatelessWidget {
               return UserLocation(location["id"], location["name"],
                   location["lat"], location["lon"]);
             }).toList();
-
-            print(membersLocations);
           }
 
           return FlutterMap(

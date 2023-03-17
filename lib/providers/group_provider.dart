@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/user_provider.dart';
@@ -34,5 +36,10 @@ class GroupProvider extends ChangeNotifier {
     final newChannel = serverClient.joinGroupSocketRoom(groupName);
     groupConnections[groupName] = newChannel;
     notifyListeners();
+  }
+
+  Stream<dynamic> getGroupConnectionAsBroadCast(String groupName) {
+    var channel = groupConnections[groupName];
+    return channel!.stream.asBroadcastStream();
   }
 }
