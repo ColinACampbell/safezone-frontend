@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/repositories/user_repository.dart';
+import 'package:safezone_frontend/utils/local_storage_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -10,10 +11,9 @@ class UserProvider extends ChangeNotifier {
 
   UserProvider(this._userRepository);
 
-  login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     currentUser = await _userRepository.loginUser(email, password);
-
-    (await prefs).setString("token", currentUser!.token!);
+    await localStorageUtil.saveUser(currentUser!);
     notifyListeners();
   }
 }
