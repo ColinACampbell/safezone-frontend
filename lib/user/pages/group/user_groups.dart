@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/user/pages/user_group.dart';
+import 'package:safezone_frontend/user/pages/group/user_group.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 

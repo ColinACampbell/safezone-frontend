@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/user/pages/user_groups.dart';
+import 'package:safezone_frontend/user/pages/group/user_groups.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
 import 'package:safezone_frontend/user/pages/user_sos.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';

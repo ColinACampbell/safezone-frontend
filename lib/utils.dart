@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:safezone_frontend/user/pages/user_group.dart';
+import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
+import 'package:safezone_frontend/user/pages/group/user_group.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
@@ -11,7 +12,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
   UserTabPage.route_name: (context) => UserTabPage(),
-  UserGroupPage.routeName: (context) => UserGroupPage()
+  UserGroupPage.routeName: (context) => UserGroupPage(),
+  GroupConfidants.routeName: (context) => GroupConfidants()
 };
 
 // TODO: Convert to singleton

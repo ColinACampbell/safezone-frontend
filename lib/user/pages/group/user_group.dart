@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:location/location.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/utils.dart';
+import 'package:safezone_frontend/user/pages/group/confidant_card.dart';
+import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/map.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserGroupPage extends ConsumerStatefulWidget {
   static const String routeName = "/user_group_page";
@@ -46,57 +41,6 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
             .add(locationUtil.getUserLocationData(currentUser, event));
       });
     });
-  }
-
-  Widget buildConfidantCard(Confidant confidant, bool isLastCard) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-      padding: EdgeInsets.all(10),
-      decoration: !isLastCard
-          ? const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey, width: .5)))
-          : null,
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-            ),
-          ),
-          Expanded(
-              child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${confidant.details.firstname} ${confidant.details.lastname}",
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Icon(
-                      Icons.location_on,
-                      size: 15,
-                    ),
-                    Text(
-                      "UWI, Mona",
-                      style: TextStyle(fontSize: 10),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ))
-        ],
-      ),
-    );
   }
 
   @override
@@ -148,14 +92,19 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              child: Text(
+                              child: const Text(
                                 "My Confidants",
                                 style: const TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
                             TextButton(
-                                onPressed: () {}, child: Text("Show All"))
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, GroupConfidants.routeName,
+                                      arguments: group.id);
+                                },
+                                child: Text("Show All"))
                           ],
                         )),
                     StreamBuilder(
@@ -166,7 +115,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                               child: ListView.builder(
                                   itemCount: group.confidants.length,
                                   itemBuilder: (context, idx) {
-                                    return buildConfidantCard(
+                                    return ConfidantCard(
                                         group.confidants[idx],
                                         group.confidants.last ==
                                             group.confidants[idx]);
