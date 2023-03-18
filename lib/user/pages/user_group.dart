@@ -35,14 +35,6 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
       final currentUser = ref.read(userProvider).currentUser!;
 
-      // groupChannel!.stream.asBroadcastStream().listen((event) {}, onDone: () {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(const SnackBar(content: Text("Connection Closed")));
-      // }, onError: (error) {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(SnackBar(content: Text("Recieved error $error")));
-      // });
-
       (await locationUtil.getLocationObject())
           .onLocationChanged
           .listen((event) async {
@@ -56,12 +48,14 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     });
   }
 
-  Widget buildConfidantCard(Confidant confidant) {
+  Widget buildConfidantCard(Confidant confidant, bool isLastCard) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
       padding: EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey, width: .5))),
+      decoration: !isLastCard
+          ? const BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey, width: .5)))
+          : null,
       child: Row(
         children: [
           Container(
@@ -110,7 +104,6 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     final group = ModalRoute.of(context)!.settings.arguments as Group;
     final groupContainer = ref.watch(groupsProvider);
 
-    final channel = groupContainer.groupConnections[group.name];
     final broadcast =
         groupContainer.groupConnections[group.name]!.stream.asBroadcastStream();
 
@@ -157,7 +150,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                             Container(
                               child: Text(
                                 "My Confidants",
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
                             TextButton(
@@ -173,7 +167,9 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                                   itemCount: group.confidants.length,
                                   itemBuilder: (context, idx) {
                                     return buildConfidantCard(
-                                        group.confidants[idx]);
+                                        group.confidants[idx],
+                                        group.confidants.last ==
+                                            group.confidants[idx]);
                                   }));
                         })
                   ],

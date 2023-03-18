@@ -38,6 +38,17 @@ class GroupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Group> fetchGroup(int groupId) async {
+    var group = await _groupRepository.fetchgroup(
+        groupId, _userProvider.currentUser!.token!);
+
+    var oldGroup = groups.firstWhere((g) => g.id == groupId);
+    groups.remove(oldGroup);
+    groups.add(group);
+    notifyListeners();
+    return group;
+  }
+
   Stream<dynamic> getGroupConnectionAsBroadCast(String groupName) {
     var channel = groupConnections[groupName];
     return channel!.stream.asBroadcastStream();
