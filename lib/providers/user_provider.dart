@@ -16,4 +16,9 @@ class UserProvider extends ChangeNotifier {
     await localStorageUtil.saveUser(currentUser!);
     notifyListeners();
   }
+
+  set setCurrentUser(User currentUser) {
+    this.currentUser = currentUser;
+    notifyListeners();
+  }
 }

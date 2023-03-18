@@ -23,7 +23,7 @@ class App extends ConsumerWidget {
           if (currentUser == null) {
             return UserLoginPage();
           } else {
-            ref.read(userProvider).currentUser = currentUser;
+            ref.read(userProvider).setCurrentUser = currentUser;
             return UserTabPage();
           }
         } else {
