@@ -12,6 +12,9 @@ import 'package:safezone_frontend/widgets/map.dart';
 
 class UserGroupPage extends ConsumerStatefulWidget {
   static const String routeName = "/user_group_page";
+
+  const UserGroupPage({super.key});
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return UserGroupPageState();
@@ -48,8 +51,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     final group = ModalRoute.of(context)!.settings.arguments as Group;
     final groupContainer = ref.watch(groupsProvider);
 
-    final broadcast =
-        groupContainer.groupConnections[group.name]!.stream.asBroadcastStream();
+    final broadcast = groupContainer.groupConnections[group.name]!;
 
     return Scaffold(
       body: Column(
@@ -67,8 +69,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                     if (snapshot.hasData) {
                       LocationTuple location = snapshot.data as LocationTuple;
                       return AppMap(
-                          locationsStream:
-                              broadcast, // pass is the streams from the server
+                          locationsStream: broadcast
+                              .stream, // pass is the streams from the server
                           initLat: location.locationData.latitude!,
                           initLong: location.locationData.longitude!);
                     } else {
@@ -107,20 +109,15 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                                 child: Text("Show All"))
                           ],
                         )),
-                    StreamBuilder(
-                        stream: broadcast,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) print(snapshot.data);
-                          return Expanded(
-                              child: ListView.builder(
-                                  itemCount: group.confidants.length,
-                                  itemBuilder: (context, idx) {
-                                    return ConfidantCard(
-                                        group.confidants[idx],
-                                        group.confidants.last ==
-                                            group.confidants[idx]);
-                                  }));
-                        })
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: group.confidants.length,
+                        itemBuilder: (context, idx) {
+                          return ConfidantCard(group.confidants[idx],
+                              group.confidants.last == group.confidants[idx]);
+                        },
+                      ),
+                    )
                   ],
                 ),
               )
