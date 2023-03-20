@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:safezone_frontend/widgets/app_button.dart';
 
 class AddConfidantPage extends StatelessWidget {
-  const AddConfidantPage({super.key});
+  final String groupId;
+  const AddConfidantPage({super.key, required this.groupId});
   static const String route_name = "/add_confidant";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,14 +40,12 @@ class AddConfidantPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 50),
                     child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await barcodeScanner();
-                            },
-                            child: const Text('Scan Barcode'),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(250, 50),
-                                backgroundColor: Color(0xFF0F3460))))))
+                        child: AppButton(
+                          onTap: () async {
+                            await barcodeScanner();
+                          },
+                          text: 'Scan Barcode',
+                        ))))
           ],
         ));
   }

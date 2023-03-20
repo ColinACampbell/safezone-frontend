@@ -76,17 +76,19 @@ class UserLoginPage extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 24),
-                    AppButton(onTap: () async {
-                      _loginFormKey.currentState!.save();
-                      try {
-                        await ref.read(userProvider).login(email, password);
-                        Navigator.of(context)
-                            .popAndPushNamed(UserTabPage.route_name);
-                      } on APIExecption catch (e) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(e.message)));
-                      }
-                    })
+                    AppButton(
+                        text: "Login",
+                        onTap: () async {
+                          _loginFormKey.currentState!.save();
+                          try {
+                            await ref.read(userProvider).login(email, password);
+                            Navigator.of(context)
+                                .popAndPushNamed(UserTabPage.route_name);
+                          } on APIExecption catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.message)));
+                          }
+                        })
                   ],
                 ),
               ),

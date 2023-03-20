@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:safezone_frontend/providers/providers.dart';
+import 'package:safezone_frontend/widgets/map.dart';
 
-class UserHomePage extends ConsumerWidget {
+class UserHomePage extends StatefulWidget {
+  const UserHomePage({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.read(userProvider).currentUser!;
-    return Center(child: Text("Welcome ${user.firstname} ${user.lastname}"));
+  State<UserHomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<UserHomePage> {
+  @override
+  void initState() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+                child: AppMap(locationsStream: null, initLat: 0, initLong: 0)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  showCoordinates(lat, long) {
+    return Text("Lat is $lat, Long is $long");
   }
 }

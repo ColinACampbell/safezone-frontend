@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
   final String hintText;
   bool isPassword = false;
+  bool autoFocus = false;
   void Function(String?) onSaved;
 
   AppTextField(
       {Key? key,
       required this.hintText,
       this.isPassword = false,
+      this.autoFocus = false,
       required this.onSaved})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autoFocus,
       onSaved: onSaved,
       decoration: InputDecoration(
           border: const OutlineInputBorder(
