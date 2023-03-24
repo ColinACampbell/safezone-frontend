@@ -48,6 +48,13 @@ class ServerClient {
     return channel;
   }
 
+  WebSocketChannel connectToLocationsStreaming(String userToken) {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://$baseURl:8080/stream-group-locations/$userToken'),
+    );
+    return channel;
+  }
+
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,
       {String? token}) async {
     var resp = await httpClient.post(
