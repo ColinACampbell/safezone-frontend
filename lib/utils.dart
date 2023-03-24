@@ -15,7 +15,7 @@ Map<String, WidgetBuilder> appRoutes = {
 // TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
-  final apiURL = "http://192.168.100.195:8080";
+  final apiURL = "http://localhost:8080";
   final header = {};
 
   Future<Map<String, dynamic>> post(

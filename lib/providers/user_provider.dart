@@ -12,4 +12,10 @@ class UserProvider extends ChangeNotifier {
     currentUser = await _userRepository.loginUser(email, password);
     notifyListeners();
   }
+  signup(
+      String firstName, String lastName, String email, String password) async {
+    currentUser =
+        await _userRepository.signupUser(firstName, lastName, email, password);
+    notifyListeners();
+}
 }
