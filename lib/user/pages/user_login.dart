@@ -78,16 +78,18 @@ class LoginState extends ConsumerState<UserLoginPage> {
             },
           ),
           const SizedBox(height: 24),
-          AppButton(onTap: () async {
-            _loginFormKey.currentState!.save();
-            try {
-              await ref.read(userProvider).login(email, password);
-              Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
-            } on APIExecption catch (e) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(e.message)));
-            }
-          })
+          AppButton(
+              text: "Login",
+              onTap: () async {
+                _loginFormKey.currentState!.save();
+                try {
+                  await ref.read(userProvider).login(email, password);
+                  Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
+                } on APIExecption catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.message)));
+                }
+              })
         ],
       ),
     );
@@ -159,18 +161,20 @@ class LoginState extends ConsumerState<UserLoginPage> {
             },
           ),
           const SizedBox(height: 24),
-          AppButton(onTap: () async {
-            _loginFormKey.currentState!.save();
-            try {
-              await ref
-                  .read(userProvider)
-                  .signup(firstName, lastName, email, password);
-              Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
-            } on APIExecption catch (e) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(e.message)));
-            }
-          })
+          AppButton(
+              text: "Sign up",
+              onTap: () async {
+                _loginFormKey.currentState!.save();
+                try {
+                  await ref
+                      .read(userProvider)
+                      .signup(firstName, lastName, email, password);
+                  Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
+                } on APIExecption catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.message)));
+                }
+              })
         ],
       ),
     );
