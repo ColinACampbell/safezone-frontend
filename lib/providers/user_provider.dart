@@ -21,10 +21,11 @@ class UserProvider extends ChangeNotifier {
     this.currentUser = currentUser;
     notifyListeners();
   }
+
   signup(
       String firstName, String lastName, String email, String password) async {
     currentUser =
         await _userRepository.signupUser(firstName, lastName, email, password);
     notifyListeners();
-}
+  }
 }
