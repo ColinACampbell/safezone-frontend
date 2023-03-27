@@ -30,7 +30,7 @@ class UserTabPageState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
-      const UserHomePage(),
+      UserHomePage(),
       const UserGroupsPage(),
       UserSOSPage()
     ];
@@ -58,6 +58,9 @@ class UserTabPageState extends ConsumerState {
           currentIndex: currentIdx,
           onTap: (index) {
             setState(() {
+              if (screens[index] is! UserHomePage) {
+                screens[0] = const UserHomePage();
+              }
               currentIdx = index;
             });
           },

@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/utils.dart';
+import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 
 class UserHomePage extends ConsumerStatefulWidget {
@@ -12,18 +15,26 @@ class UserHomePage extends ConsumerStatefulWidget {
   ConsumerState<UserHomePage> createState() => _HomePageState();
 }
 
+// TODO: Check out to dispose this completely when the user changes page
 class _HomePageState extends ConsumerState<UserHomePage> {
+  Timer? locationUpdateTimer;
+
+  startListening() {
+    ref.read(userProvider).generalGroupsStream!.sink.add("ss");
+
+    locationUpdateTimer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      ref.read(userProvider).generalGroupsStream!.sink.add("ss");
+    });
+  }
+
+  stopListening() {
+    locationUpdateTimer!.cancel();
+  }
+
   @override
   void initState() {
-    final currentUser = ref.read(userProvider).currentUser;
-    final channel =
-        serverClient.connectToLocationsStreaming(currentUser!.token!);
-    channel.stream.listen((event) {
-      print(event);
-    });
-
-    Timer.periodic(const Duration(seconds: 6), (timer) {
-      channel.sink.add("demo");
+    Future.delayed(Duration.zero, () {
+      startListening();
     });
   }
 
@@ -34,11 +45,35 @@ class _HomePageState extends ConsumerState<UserHomePage> {
         body: Column(
           children: [
             Expanded(
-                child: AppMap(locationsStream: null, initLat: 0, initLong: 0)),
+              child: FutureBuilder(
+                  future: locationUtil.getLocation(),
+                  builder: (context, snapshot) {
+                    double initLat = 0, initLong = 0;
+
+                    if (snapshot.hasData) {
+                      LocationTuple tuple = snapshot.data as LocationTuple;
+                      initLat = tuple.locationData.latitude!;
+                      initLong = tuple.locationData.longitude!;
+                      return AppMap(
+                          locationsStream:
+                              ref.watch(userProvider).groupsBroadCast,
+                          initLat: initLat,
+                          initLong: initLong);
+                    } else {
+                      return const Text("Loading");
+                    }
+                  }),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stopListening();
   }
 
   showCoordinates(lat, long) {

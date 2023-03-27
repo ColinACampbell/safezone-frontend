@@ -27,7 +27,7 @@ class LoginState extends ConsumerState<UserLoginPage> {
   String lastName = "";
   bool isInLoginState = true;
 
-  Widget loginForm(context, ref) {
+  Widget loginForm(context, WidgetRef ref) {
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -84,6 +84,9 @@ class LoginState extends ConsumerState<UserLoginPage> {
                 _loginFormKey.currentState!.save();
                 try {
                   await ref.read(userProvider).login(email, password);
+                  await ref
+                      .read(userProvider)
+                      .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
@@ -95,7 +98,7 @@ class LoginState extends ConsumerState<UserLoginPage> {
     );
   }
 
-  Widget signUpForm(context, ref) {
+  Widget signUpForm(context, WidgetRef ref) {
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -169,6 +172,9 @@ class LoginState extends ConsumerState<UserLoginPage> {
                   await ref
                       .read(userProvider)
                       .signup(firstName, lastName, email, password);
+                  await ref
+                      .read(userProvider)
+                      .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
