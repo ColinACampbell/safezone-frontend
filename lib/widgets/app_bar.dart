@@ -12,7 +12,9 @@ class CustomAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+          IconButton(onPressed: () {
+            Navigator.pop(context);
+          }, icon: const Icon(Icons.arrow_back)),
           Text(
             title,
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

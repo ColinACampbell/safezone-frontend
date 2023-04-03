@@ -22,7 +22,7 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   startListening() {
     ref.read(userProvider).generalGroupsStream!.sink.add("ss");
 
-    locationUpdateTimer = Timer.periodic(const Duration(seconds: 6), (timer) {
+    locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       ref.read(userProvider).generalGroupsStream!.sink.add("ss");
     });
   }
@@ -34,6 +34,7 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
+      ref.read(userProvider).generalGroupsStream!.sink.add("ss");
       startListening();
     });
   }
