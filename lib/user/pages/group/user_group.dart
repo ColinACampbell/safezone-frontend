@@ -33,7 +33,8 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
       final currentUser = ref.read(userProvider).currentUser!;
 
-      (await locationUtil.getLocationObject())
+      locationUtil.initLocationObject();
+      (await locationUtil.location!)
           .onLocationChanged
           .listen((event) async {
         print("Location Changed to ${event.latitude}, ${event.longitude}");

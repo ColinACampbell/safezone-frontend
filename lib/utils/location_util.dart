@@ -13,8 +13,14 @@ class LocationTuple {
 class _LocationUtil {
 
   Future<LocationData>? _initLocationData;
+  Future<Location>? location;
 
-  Future<Location> getLocationObject() async {
+  initLocationObject()
+  {
+    location ??= _getLocationObject();
+  }
+
+  Future<Location> _getLocationObject() async {
     Location location = Location();
 
     bool _serviceEnabled;
@@ -43,8 +49,9 @@ class _LocationUtil {
   }
 
   Future<LocationTuple> getLocation() async {
-    Location location = await getLocationObject();
-    var tuple = LocationTuple(location, (await _initLocationData)!);
+    //Location location = await getLocationObject();
+    initLocationObject();
+    var tuple = LocationTuple(await location!, (await _initLocationData)!);
     return tuple;
   }
 
