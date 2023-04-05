@@ -33,10 +33,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
       final currentUser = ref.read(userProvider).currentUser!;
 
-      locationUtil.initLocationObject();
-      (await locationUtil.location!)
-          .onLocationChanged
-          .listen((event) async {
+      ref.read(locationProvider).getLocationStream().listen((event) async {
         print("Location Changed to ${event.latitude}, ${event.longitude}");
         // List<Placemark> placemarks =
         //     await placemarkFromCoordinates(event.latitude!, event.longitude!);

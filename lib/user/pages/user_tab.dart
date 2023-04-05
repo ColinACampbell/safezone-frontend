@@ -25,6 +25,9 @@ class UserTabPageState extends ConsumerState {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     super.initState();
+    Future.delayed(Duration.zero,()async {
+      ref.read(locationProvider).initLocationUtil();
+    });
   }
 
   @override

@@ -10,7 +10,7 @@ class LocationTuple {
   LocationTuple(this.location, this.locationData);
 }
 
-class _LocationUtil {
+class LocationUtil {
 
   Future<LocationData>? _initLocationData;
   Future<Location>? location;
@@ -65,4 +65,4 @@ class _LocationUtil {
   }
 }
 
-final locationUtil = _LocationUtil();
+final locationUtil = LocationUtil();
