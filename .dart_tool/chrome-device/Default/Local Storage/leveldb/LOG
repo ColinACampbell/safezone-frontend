@@ -1,11 +1,19 @@
-2023/04/03-13:45:42.420 a1ec Creating DB C:\Users\Colin\AppData\Local\Temp\flutter_tools.1b8a17af\flutter_tools_chrome_device.676bd53c\Default\Local Storage\leveldb since it was missing.
-2023/04/03-13:45:42.522 a1ec Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.1b8a17af\flutter_tools_chrome_device.676bd53c\Default\Local Storage\leveldb/MANIFEST-000001
-2023/04/03-14:31:35.120 9cb0 Level-0 table #5: started
-2023/04/03-14:31:35.123 9cb0 Level-0 table #5: 90570 bytes OK
-2023/04/03-14:31:35.125 9cb0 Delete type=0 #3
-2023/04/03-14:32:32.496 9cb0 Level-0 table #7: started
-2023/04/03-14:32:32.508 9cb0 Level-0 table #7: 91075 bytes OK
-2023/04/03-14:32:32.510 9cb0 Delete type=0 #4
-2023/04/03-14:33:38.917 9cb0 Level-0 table #9: started
-2023/04/03-14:33:38.920 9cb0 Level-0 table #9: 41885 bytes OK
-2023/04/03-14:33:38.922 9cb0 Delete type=0 #6
+2023/04/07-11:44:13.677 5a60 Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\Local Storage\leveldb/MANIFEST-000001
+2023/04/07-11:44:13.680 5a60 Recovering log #11
+2023/04/07-11:44:13.686 5a60 Reusing old log C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\Local Storage\leveldb/000011.log 
+2023/04/07-11:44:13.693 5a60 Delete type=0 #8
+2023/04/07-12:19:01.960 650 Level-0 table #15: started
+2023/04/07-12:19:01.967 650 Level-0 table #15: 469260 bytes OK
+2023/04/07-12:19:01.969 650 Delete type=0 #11
+2023/04/07-13:13:22.675 3e1c Level-0 table #17: started
+2023/04/07-13:13:22.684 3e1c Level-0 table #17: 55383 bytes OK
+2023/04/07-13:13:22.686 3e1c Delete type=0 #14
+2023/04/07-13:13:22.688 3e1c Compacting 4@0 + 1@1 files
+2023/04/07-13:13:22.709 3e1c Generated table #18@0: 139 keys, 498587 bytes
+2023/04/07-13:13:22.709 3e1c Compacted 4@0 + 1@1 files => 498587 bytes
+2023/04/07-13:13:22.710 3e1c compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/04/07-13:13:22.712 3e1c Delete type=2 #7
+2023/04/07-13:13:22.712 3e1c Delete type=2 #9
+2023/04/07-13:13:22.712 3e1c Delete type=2 #12
+2023/04/07-13:13:22.712 3e1c Delete type=2 #15
+2023/04/07-13:13:22.712 3e1c Delete type=2 #17

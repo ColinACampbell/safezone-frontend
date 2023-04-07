@@ -1,2 +1,4 @@
-2023/04/03-13:57:11.079 9f04 Creating DB C:\Users\Colin\AppData\Local\Temp\flutter_tools.7bfb993b\flutter_tools_chrome_device.2dd93138\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb since it was missing.
-2023/04/03-13:57:11.084 9f04 Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.7bfb993b\flutter_tools_chrome_device.2dd93138\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/04/07-12:18:57.590 5888 Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/04/07-12:18:57.591 5888 Recovering log #18
+2023/04/07-12:18:57.592 5888 Reusing old log C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/000018.log 
+2023/04/07-12:18:57.592 5888 Delete type=2 #17

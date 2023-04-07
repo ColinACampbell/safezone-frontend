@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
+import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 import 'package:safezone_frontend/user/pages/group/confidant_card.dart';
 import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
@@ -56,6 +58,9 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
         children: [
           CustomAppBar(
             title: group.name,
+            iconButton: IconButton(onPressed:(){
+              Navigator.pushNamed(context, AddGeoFenceScreen.routeName);
+            }, icon: Icon(Icons.group_add)),
           ),
           Expanded(
               child: Stack(
@@ -98,13 +103,17 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            TextButton(
+                            Row(
+                              children: [
+                                 TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context, GroupConfidants.routeName,
                                       arguments: group.id);
                                 },
-                                child: Text("Show All"))
+                                child: Text("Show All")),
+                              ],
+                            )
                           ],
                         )),
                     Expanded(
