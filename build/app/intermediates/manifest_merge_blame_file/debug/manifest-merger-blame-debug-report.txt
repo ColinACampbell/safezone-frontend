@@ -6,27 +6,27 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="16"
-9        android:targetSdkVersion="31" />
+9        android:targetSdkVersion="33" />
 10    <!--
 11         The INTERNET permission is required for development. Specifically,
 12         the Flutter tool needs it to communicate with the running application
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\debug\AndroidManifest.xml:7:5-66
-15-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\debug\AndroidManifest.xml:7:22-64
+15-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/debug/AndroidManifest.xml:7:5-66
+15-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/debug/AndroidManifest.xml:7:22-64
 16    <!-- Always include this permission -->
 17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
-17-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\main\AndroidManifest.xml:4:4-80
-17-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\main\AndroidManifest.xml:4:21-77
+17-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/main/AndroidManifest.xml:4:4-80
+17-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/main/AndroidManifest.xml:4:21-77
 18    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-18-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\main\AndroidManifest.xml:7:4-78
-18-->C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\android\app\src\main\AndroidManifest.xml:7:21-75
+18-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/main/AndroidManifest.xml:7:4-78
+18-->/Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/android/app/src/main/AndroidManifest.xml:7:21-75
 19
 20    <application
 21        android:name="android.app.Application"
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-22-->[androidx.core:core:1.6.0] C:\Users\Colin\.gradle\caches\transforms-3\acbce933e4b464a5224ed377a62db1f5\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
+22-->[androidx.core:core:1.6.0] /Users/colincampbell/.gradle/caches/transforms-3/acbce933e4b464a5224ed377a62db1f5/transformed/core-1.6.0/AndroidManifest.xml:24:18-86
 23        android:debuggable="true"
 24        android:icon="@mipmap/ic_launcher"
 25        android:label="safezone_frontend" >
@@ -64,44 +64,44 @@
 57            android:value="2" />
 58
 59        <service
-59-->[:location] C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:13:9-17:56
+59-->[:location] /Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/build/location/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-17:56
 60            android:name="com.lyokone.location.FlutterLocationService"
-60-->[:location] C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-71
+60-->[:location] /Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/build/location/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-71
 61            android:enabled="true"
-61-->[:location] C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-35
+61-->[:location] /Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/build/location/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-35
 62            android:exported="false"
-62-->[:location] C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-37
+62-->[:location] /Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/build/location/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-37
 63            android:foregroundServiceType="location" />
-63-->[:location] C:\Users\Colin\Documents\School Docs\Capstone\safezone-frontend\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-53
+63-->[:location] /Users/colincampbell/Documents/AppProjects/Capstone/safezone-frontend/build/location/intermediates/merged_manifest/debug/AndroidManifest.xml:17:13-53
 64
 65        <uses-library
-65-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+65-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
 66            android:name="androidx.window.extensions"
-66-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+66-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
 67            android:required="false" />
-67-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+67-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
 68        <uses-library
-68-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+68-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
 69            android:name="androidx.window.sidecar"
-69-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+69-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
 70            android:required="false" />
-70-->[androidx.window:window:1.0.0-beta04] C:\Users\Colin\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+70-->[androidx.window:window:1.0.0-beta04] /Users/colincampbell/.gradle/caches/transforms-3/49bc944d29f70d45aa5add8e43e3247e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
 71
 72        <activity
-72-->[com.google.android.gms:play-services-base:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\d5e87649c8fc26ce8d5909adaa0dc569\transformed\jetified-play-services-base-16.0.1\AndroidManifest.xml:23:9-26:75
+72-->[com.google.android.gms:play-services-base:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/8ab57ddb5beaa0ce95f281da093ff833/transformed/jetified-play-services-base-16.0.1/AndroidManifest.xml:23:9-26:75
 73            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-73-->[com.google.android.gms:play-services-base:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\d5e87649c8fc26ce8d5909adaa0dc569\transformed\jetified-play-services-base-16.0.1\AndroidManifest.xml:24:13-79
+73-->[com.google.android.gms:play-services-base:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/8ab57ddb5beaa0ce95f281da093ff833/transformed/jetified-play-services-base-16.0.1/AndroidManifest.xml:24:13-79
 74            android:exported="false"
-74-->[com.google.android.gms:play-services-base:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\d5e87649c8fc26ce8d5909adaa0dc569\transformed\jetified-play-services-base-16.0.1\AndroidManifest.xml:25:13-37
+74-->[com.google.android.gms:play-services-base:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/8ab57ddb5beaa0ce95f281da093ff833/transformed/jetified-play-services-base-16.0.1/AndroidManifest.xml:25:13-37
 75            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-75-->[com.google.android.gms:play-services-base:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\d5e87649c8fc26ce8d5909adaa0dc569\transformed\jetified-play-services-base-16.0.1\AndroidManifest.xml:26:13-72
+75-->[com.google.android.gms:play-services-base:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/8ab57ddb5beaa0ce95f281da093ff833/transformed/jetified-play-services-base-16.0.1/AndroidManifest.xml:26:13-72
 76
 77        <meta-data
-77-->[com.google.android.gms:play-services-basement:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\e057e36a9dcdd511e92ff8e6a1c6c77d\transformed\jetified-play-services-basement-16.0.1\AndroidManifest.xml:23:9-25:69
+77-->[com.google.android.gms:play-services-basement:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/ef98a048b13f83d8cc71017f5333c3f7/transformed/jetified-play-services-basement-16.0.1/AndroidManifest.xml:23:9-25:69
 78            android:name="com.google.android.gms.version"
-78-->[com.google.android.gms:play-services-basement:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\e057e36a9dcdd511e92ff8e6a1c6c77d\transformed\jetified-play-services-basement-16.0.1\AndroidManifest.xml:24:13-58
+78-->[com.google.android.gms:play-services-basement:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/ef98a048b13f83d8cc71017f5333c3f7/transformed/jetified-play-services-basement-16.0.1/AndroidManifest.xml:24:13-58
 79            android:value="@integer/google_play_services_version" />
-79-->[com.google.android.gms:play-services-basement:16.0.1] C:\Users\Colin\.gradle\caches\transforms-3\e057e36a9dcdd511e92ff8e6a1c6c77d\transformed\jetified-play-services-basement-16.0.1\AndroidManifest.xml:25:13-66
+79-->[com.google.android.gms:play-services-basement:16.0.1] /Users/colincampbell/.gradle/caches/transforms-3/ef98a048b13f83d8cc71017f5333c3f7/transformed/jetified-play-services-basement-16.0.1/AndroidManifest.xml:25:13-66
 80    </application>
 81
 82</manifest>

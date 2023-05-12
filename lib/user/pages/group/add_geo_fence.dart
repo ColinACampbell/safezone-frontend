@@ -49,7 +49,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
         });
     setState(() {
       geoFenceMarkers.add(marker);
-      print("Added marker witd with $size");
+      print("Added marker with $size");
     });
   }
 
@@ -71,8 +71,6 @@ class _AddGeoFenceScreenState extends ConsumerState {
             options: MapOptions(
               onMapCreated: (controlelr) {},
               onPositionChanged: ((position, hasGesture) {
-                print("Changed");
-                print(position.zoom!);
                 if (geoFenceMarkers.isNotEmpty) {
                   setState(() {
                     scaledWidth = calcScaledWidth(pointWidth, position.zoom!);
