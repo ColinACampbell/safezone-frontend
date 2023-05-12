@@ -1,3 +1,14 @@
-2023/04/07-13:13:17.567 5888 Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/MANIFEST-000001
-2023/04/07-13:13:17.568 5888 Recovering log #18
-2023/04/07-13:13:17.572 5888 Reusing old log C:\Users\Colin\AppData\Local\Temp\flutter_tools.d45e4735\flutter_tools_chrome_device.599dfb62\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/000018.log 
+2023/04/10-10:20:45.852 4e3c Reusing MANIFEST C:\Users\Colin\AppData\Local\Temp\flutter_tools.287bc6b4\flutter_tools_chrome_device.ea995cec\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/04/10-10:20:45.852 4e3c Recovering log #18
+2023/04/10-10:20:45.856 4e3c Reusing old log C:\Users\Colin\AppData\Local\Temp\flutter_tools.287bc6b4\flutter_tools_chrome_device.ea995cec\Default\IndexedDB\https_www.youtube.com_0.indexeddb.leveldb/000018.log 
+2023/04/10-10:20:45.856 4e3c Delete type=0 #3
+2023/04/10-10:20:46.502 2d98 Level-0 table #23: started
+2023/04/10-10:20:46.506 2d98 Level-0 table #23: 63048 bytes OK
+2023/04/10-10:20:46.507 2d98 Delete type=0 #18
+2023/04/10-10:20:46.508 2d98 Manual compaction at level-0 from '\x00\x0c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0d\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/04/10-10:20:46.509 2d98 Manual compaction at level-1 from '\x00\x0c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0d\x00\x00\x00' @ 0 : 0; will stop at '\x00\x0c\x01\x1f\x04\x03\x01\x06\x00Q\x00U\x00E\x00U\x00E\x00D\x03\x00\x00\x00\x00\x00\x00L@\x03\x00\xa0g\xb4\xcbuxB\x00\x03\x00\x00\x00\x00\x00\x00\x18@' @ 3577 : 1
+2023/04/10-10:20:46.509 2d98 Compacting 1@1 + 1@2 files
+2023/04/10-10:20:46.513 2d98 Generated table #24@1: 293 keys, 10011 bytes
+2023/04/10-10:20:46.513 2d98 Compacted 1@1 + 1@2 files => 10011 bytes
+2023/04/10-10:20:46.513 2d98 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/04/10-10:20:46.514 2d98 Manual compaction at level-1 from '\x00\x0c\x01\x1f\x04\x03\x01\x06\x00Q\x00U\x00E\x00U\x00E\x00D\x03\x00\x00\x00\x00\x00\x00L@\x03\x00\xa0g\xb4\xcbuxB\x00\x03\x00\x00\x00\x00\x00\x00\x18@' @ 3577 : 1 .. '\x00\x0d\x00\x00\x00' @ 0 : 0; will stop at (end)
