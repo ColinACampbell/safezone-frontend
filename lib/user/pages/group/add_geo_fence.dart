@@ -55,17 +55,19 @@ class _AddGeoFenceScreenState extends ConsumerState {
   }
 
   void addMarker(LatLng l, double size) {
-    Marker marker = Marker(
-        width: size,
-        height: size,
-        point: LatLng(l.latitude, l.longitude),
-        builder: (context) {
-          return Container(
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(255, 0, 0, .9),
-            ),
-          );
-        });
+    // Marker marker = Marker(
+    //     width: size,
+    //     height: size,
+    //     point: LatLng(l.latitude, l.longitude),
+    //     builder: (context) {
+    //       return Container(
+    //         decoration: const BoxDecoration(
+    //           color: Color.fromRGBO(0, 0, 250, .9),
+    //         ),
+    //       );
+    //     });
+
+    Marker marker = createMarker(l, size);
     setState(() {
       geoFenceMarkers.add(marker);
       print("Added marker with $size");
@@ -80,7 +82,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
         builder: (context) {
           return Container(
             decoration: const BoxDecoration(
-                color: Color.fromRGBO(255, 0, 0, .9), shape: BoxShape.circle),
+                color: Color.fromRGBO(0, 0, 250, .9), shape: BoxShape.circle),
           );
         });
   }
@@ -119,6 +121,8 @@ class _AddGeoFenceScreenState extends ConsumerState {
                     point: m1.point,
                     radius: distanceInMeters,
                     useRadiusInMeter: true,
+                    borderColor: const Color.fromRGBO(200, 3, 3, .9),
+                    borderStrokeWidth: 1,
                     color: const Color.fromRGBO(200, 200, 200, .5));
                 if (circleMarkers.length == 0) {
                   circleMarkers.add(newCircle);
@@ -130,7 +134,12 @@ class _AddGeoFenceScreenState extends ConsumerState {
           },
           child: const Icon(Icons.add)),
           const SizedBox(height: 20),
-          FloatingActionButton(onPressed: (){}, child: const Icon(Icons.delete),)
+          FloatingActionButton(onPressed: (){
+            setState(() {
+              geoFenceMarkers.clear();
+              circleMarkers.clear();
+            });
+          }, child: const Icon(Icons.delete),)
         ],
       ),
       body: Column(
