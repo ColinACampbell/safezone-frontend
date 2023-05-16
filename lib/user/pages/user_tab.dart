@@ -25,19 +25,19 @@ class UserTabPageState extends ConsumerState {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     super.initState();
-    Future.delayed(Duration.zero,()async {
+    Future.delayed(Duration.zero, () async {
       ref.read(locationProvider).initLocationUtil();
     });
   }
 
+  List<Widget> screens = [
+    UserHomePage(),
+    const UserGroupsPage(),
+    UserSOSPage()
+  ];
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> screens = [
-      UserHomePage(),
-      const UserGroupsPage(),
-      UserSOSPage()
-    ];
-
     return Scaffold(
       body: screens[currentIdx],
       floatingActionButton: screens[currentIdx] is UserGroupsPage
@@ -61,9 +61,9 @@ class UserTabPageState extends ConsumerState {
           currentIndex: currentIdx,
           onTap: (index) {
             setState(() {
-              // if (screens[index] is! UserHomePage) {
-              //   screens[0] = const UserHomePage();
-              // }
+              if (screens[index] is! UserHomePage) {
+                screens[0] = const UserHomePage();
+              }
               currentIdx = index;
             });
           },

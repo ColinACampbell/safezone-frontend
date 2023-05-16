@@ -8,6 +8,7 @@ import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/utils.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/map.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserHomePage extends ConsumerStatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -18,19 +19,38 @@ class UserHomePage extends ConsumerStatefulWidget {
 // TODO: Check out to dispose this completely when the user changes page
 class _HomePageState extends ConsumerState<UserHomePage> {
 
+
+  Timer? locationUpdateTimer;
+
+  startListening(WebSocketChannel? groupChannel) {
+    locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      groupChannel!.sink.add("");
+    });
+  }
+
+  stopListening() {
+    locationUpdateTimer!.cancel();
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
 
-      await ref.read(locationProvider).initLocationUtil();
-      ref.read(locationProvider).getLocationStream().listen((event) async {
-        // ignore: avoid_print
-        print("Location Changed to ${event.latitude}, ${event.longitude}");
-        final currentUser = ref.read(userProvider).currentUser!;
-        ref.read(userProvider).generalGroupsStream!.sink.add(locationUtil.getUserLocationData(currentUser, event));
-      });
+      // await ref.read(locationProvider).initLocationUtil();
+
+      // ref.read(locationProvider).getLocationStream().listen((event) async {
+      //   // ignore: avoid_print
+      //   print("Location Changed to ${event.latitude}, ${event.longitude}");
+      //   //final currentUser = ref.read(userProvider).currentUser!;
+      //   ref.read(userProvider).updateUserLocation(locationUtil, event);
+      // });
 
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override

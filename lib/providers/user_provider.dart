@@ -5,6 +5,7 @@ import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/repositories/user_repository.dart';
 import 'package:safezone_frontend/utils.dart';
 import 'package:safezone_frontend/utils/local_storage_util.dart';
+import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -44,5 +45,10 @@ class UserProvider extends ChangeNotifier {
 
   Stream<dynamic> generalGroupStreamAsBroadCast() {
     return generalGroupsStream!.stream.asBroadcastStream();
+  }
+
+  updateUserLocation(LocationUtil locationUtil,dynamic event)
+  {
+    generalGroupsStream!.sink.add(locationUtil.getUserLocationData(currentUser!, event));
   }
 }

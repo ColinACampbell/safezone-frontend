@@ -4,8 +4,10 @@ import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/providers/user_provider.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
+import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
+import 'package:workmanager/workmanager.dart';
 
 // TODO : Add form validation
 class UserLoginPage extends ConsumerStatefulWidget {
@@ -84,9 +86,10 @@ class LoginState extends ConsumerState<UserLoginPage> {
                 _loginFormKey.currentState!.save();
                 try {
                   await ref.read(userProvider).login(email, password);
-                  await ref
-                      .read(userProvider)
-                      .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
+                  //await ref
+                  //    .read(userProvider)
+                  //    .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
+                  Workmanager().registerOneOffTask("task-01", "BACKGROUND_UPDATE");
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
