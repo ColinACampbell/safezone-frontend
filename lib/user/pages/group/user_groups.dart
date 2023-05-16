@@ -56,7 +56,7 @@ class GroupList extends ConsumerWidget {
         // Open the group and pass it in into the page
         ref
             .read(groupsProvider)
-            .connectToGroup(group.name); // Create the socket connection
+            .connectToGroup(group.id); // Create the socket connection
         Navigator.pushNamed(context, UserGroupPage.routeName, arguments: group);
       },
       child: Container(

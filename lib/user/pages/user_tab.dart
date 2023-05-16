@@ -61,9 +61,9 @@ class UserTabPageState extends ConsumerState {
           currentIndex: currentIdx,
           onTap: (index) {
             setState(() {
-              if (screens[index] is! UserHomePage) {
-                screens[0] = const UserHomePage();
-              }
+              // if (screens[index] is! UserHomePage) {
+              //   screens[0] = const UserHomePage();
+              // }
               currentIdx = index;
             });
           },

@@ -9,7 +9,7 @@ class LocationProvider extends ChangeNotifier
   LocationTuple? _locationTuple;
   LocationProvider(this._locationUtil);
 
-  void initLocationUtil() async
+  Future<void> initLocationUtil() async
   {
     _locationUtil.initLocationObject();
     _locationTuple = await _locationUtil.getLocation();

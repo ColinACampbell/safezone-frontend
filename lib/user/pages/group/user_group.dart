@@ -11,6 +11,7 @@ import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/map.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserGroupPage extends ConsumerStatefulWidget {
   static const String routeName = "/user_group_page";
@@ -24,6 +25,19 @@ class UserGroupPage extends ConsumerStatefulWidget {
 }
 
 class UserGroupPageState extends ConsumerState<UserGroupPage> {
+  
+  Timer? locationUpdateTimer;
+
+  startListening(WebSocketChannel? groupChannel) {
+    locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      groupChannel!.sink.add("");
+    });
+  }
+
+  stopListening() {
+    locationUpdateTimer!.cancel();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -31,19 +45,25 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     Future.delayed(Duration.zero, () async {
       final group = ModalRoute.of(context)!.settings.arguments as Group;
       final groupChannel =
-          ref.read(groupsProvider).groupConnections[group.name];
+          ref.read(groupsProvider).groupConnections[group.id];
 
-      final currentUser = ref.read(userProvider).currentUser!;
 
-      ref.read(locationProvider).getLocationStream().listen((event) async {
-        print("Location Changed to ${event.latitude}, ${event.longitude}");
-        // List<Placemark> placemarks =
-        //     await placemarkFromCoordinates(event.latitude!, event.longitude!);
-        // print(placemarks.length);
-        groupChannel!.sink
-            .add(locationUtil.getUserLocationData(currentUser, event));
-      });
+      startListening(groupChannel);
+      // ref.read(locationProvider).getLocationStream().listen((event) async {
+      //   print("Location Changed to ${event.latitude}, ${event.longitude}");
+      //   // List<Placemark> placemarks =
+      //   //     await placemarkFromCoordinates(event.latitude!, event.longitude!);
+      //   // print(placemarks.length);
+      //   groupChannel!.sink
+      //       .add(locationUtil.getUserLocationData(currentUser, event));
+      // });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stopListening();
   }
 
   @override
@@ -51,16 +71,18 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
     final group = ModalRoute.of(context)!.settings.arguments as Group;
     final groupContainer = ref.watch(groupsProvider);
 
-    final broadcast = groupContainer.groupConnections[group.name]!;
+    final broadcast = groupContainer.groupConnections[group.id]!;
 
     return Scaffold(
       body: Column(
         children: [
           CustomAppBar(
             title: group.name,
-            iconButton: IconButton(onPressed:(){
-              Navigator.pushNamed(context, AddGeoFenceScreen.routeName);
-            }, icon: Icon(Icons.group_add)),
+            iconButton: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, AddGeoFenceScreen.routeName);
+                },
+                icon: Icon(Icons.group_add)),
           ),
           Expanded(
               child: Stack(
@@ -105,13 +127,13 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                             ),
                             Row(
                               children: [
-                                 TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, GroupConfidants.routeName,
-                                      arguments: group.id);
-                                },
-                                child: Text("Show All")),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, GroupConfidants.routeName,
+                                          arguments: group.id);
+                                    },
+                                    child: Text("Show All")),
                               ],
                             )
                           ],

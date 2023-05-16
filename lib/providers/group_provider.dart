@@ -12,7 +12,7 @@ class GroupProvider extends ChangeNotifier {
   final UserProvider _userProvider;
 
   List<Group> groups = [];
-  Map<String, WebSocketChannel> groupConnections = {};
+  Map<int, WebSocketChannel> groupConnections = {};
 
   GroupProvider(this._groupRepository, this._userProvider);
 
@@ -32,9 +32,9 @@ class GroupProvider extends ChangeNotifier {
     return groups;
   }
 
-  connectToGroup(String groupName) {
-    final newChannel = serverClient.joinGroupSocketRoom(groupName);
-    groupConnections[groupName] = newChannel;
+  connectToGroup(int groupId) {
+    final newChannel = serverClient.joinGroupSocketRoom(groupId);
+    groupConnections[groupId] = newChannel;
     notifyListeners();
   }
 
@@ -49,8 +49,8 @@ class GroupProvider extends ChangeNotifier {
     return group;
   }
 
-  Stream<dynamic> getGroupConnectionAsBroadCast(String groupName) {
-    var channel = groupConnections[groupName];
+  Stream<dynamic> getGroupConnectionAsBroadCast(int groupId) {
+    var channel = groupConnections[groupId];
     return channel!.stream.asBroadcastStream();
   }
 }

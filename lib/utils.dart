@@ -42,9 +42,9 @@ class ServerClient {
     return header;
   }
 
-  WebSocketChannel joinGroupSocketRoom(String groupName) {
+  WebSocketChannel joinGroupSocketRoom(int groupId) {
     final channel = WebSocketChannel.connect(
-      Uri.parse('ws://$baseURl:8080/group/$groupName'),
+      Uri.parse('ws://$baseURl:8080/group/$groupId'),
     );
 
     return channel;

@@ -45,6 +45,8 @@ class LocationUtil {
 
     _initLocationData ??= location.getLocation(); // if it's null, do assignment
 
+    //location.enableBackgroundMode(enable: true);
+
     return location;
   }
 
