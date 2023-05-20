@@ -89,7 +89,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
             alignment: Alignment.bottomCenter,
             children: [
               FutureBuilder(
-                  future: locationUtil.getLocation(),
+                  //future: locationUtil.getLocation(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       LocationTuple location = snapshot.data as LocationTuple;

@@ -11,8 +11,8 @@ class LocationProvider extends ChangeNotifier
 
   Future<void> initLocationUtil() async
   {
-    _locationUtil.initLocationObject();
-    _locationTuple = await _locationUtil.getLocation();
+    //_locationUtil.initLocationObject();
+    //_locationTuple = await _locationUtil.getLocation();
     notifyListeners();
   }
 

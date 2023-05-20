@@ -57,6 +57,14 @@ class ServerClient {
     return channel;
   }
 
+  // Gets all the locations from all the user's mutual members
+  WebSocketChannel connectToMembersLocationUpdates(String userToken) {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://$baseURl:8080/get-group-locations/$userToken'),
+    );
+    return channel;
+  }
+
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,
       {String? token}) async {
     var resp = await httpClient.post(

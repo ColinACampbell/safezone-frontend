@@ -38,7 +38,7 @@ class UserProvider extends ChangeNotifier {
 
   connectToGeneralLocationsStreaming() {
     generalGroupsStream =
-        serverClient.connectToLocationsStreaming(currentUser!.token!);
+        serverClient.connectToMembersLocationUpdates(currentUser!.token!);
     groupsBroadCast = generalGroupsStream!.stream.asBroadcastStream();
     notifyListeners();
   }
@@ -49,6 +49,6 @@ class UserProvider extends ChangeNotifier {
 
   updateUserLocation(LocationUtil locationUtil,dynamic event)
   {
-    generalGroupsStream!.sink.add(locationUtil.getUserLocationData(currentUser!, event));
+    //generalGroupsStream!.sink.add(locationUtil.getUserLocationData(currentUser!, event));
   }
 }

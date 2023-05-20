@@ -12,5 +12,5 @@ final userProvider = ChangeNotifierProvider<UserProvider>(
 final groupsProvider = ChangeNotifierProvider<GroupProvider>(
     (ref) => GroupProvider(GroupRepository(), ref.read(userProvider)));
 
-final locationProvider =
-    ChangeNotifierProvider<LocationProvider>((ref) => LocationProvider(locationUtil));
+//final locationProvider =
+//    ChangeNotifierProvider<LocationProvider>((ref) => LocationProvider(locationUtil));

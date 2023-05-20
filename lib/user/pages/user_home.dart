@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/utils.dart';
-import 'package:safezone_frontend/utils/location_util.dart';
+import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -23,6 +20,7 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   Timer? locationUpdateTimer;
 
   startListening(WebSocketChannel? groupChannel) {
+    print("Started listening");
     locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       groupChannel!.sink.add("");
     });
@@ -35,22 +33,25 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-
-      // await ref.read(locationProvider).initLocationUtil();
-
-      // ref.read(locationProvider).getLocationStream().listen((event) async {
-      //   // ignore: avoid_print
-      //   print("Location Changed to ${event.latitude}, ${event.longitude}");
-      //   //final currentUser = ref.read(userProvider).currentUser!;
-      //   ref.read(userProvider).updateUserLocation(locationUtil, event);
-      // });
-
+      startListening(ref.read(userProvider).generalGroupsStream);
     });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stopListening();
+  }
+
+  Future<Position?> getPosition() async
+  {
+    await requestGeoLocatorPermission();
+    return Geolocator.getCurrentPosition();
   }
 
   @override
@@ -61,14 +62,14 @@ class _HomePageState extends ConsumerState<UserHomePage> {
           children: [
             Expanded(
               child: FutureBuilder(
-                  future: locationUtil.getLocation(),
+                  future:getPosition(), // TODO: Change
                   builder: (context, snapshot) {
                     double initLat = 0, initLong = 0;
 
                     if (snapshot.hasData) {
-                      LocationTuple tuple = snapshot.data as LocationTuple;
-                      initLat = tuple.locationData.latitude!;
-                      initLong = tuple.locationData.longitude!;
+                      Position position = snapshot.data as Position;
+                      initLat = position.latitude;
+                      initLong = position.longitude;
                       return AppMap(
                           locationsStream:
                               ref.watch(userProvider).groupsBroadCast,

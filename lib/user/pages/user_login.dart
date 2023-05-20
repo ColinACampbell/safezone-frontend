@@ -4,6 +4,7 @@ import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/providers/user_provider.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
+import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
@@ -28,6 +29,12 @@ class LoginState extends ConsumerState<UserLoginPage> {
   String firstName = "";
   String lastName = "";
   bool isInLoginState = true;
+
+  @override
+  void initState() {
+    super.initState();
+    requestGeoLocatorPermission();
+  }
 
   Widget loginForm(context, WidgetRef ref) {
     return Form(
@@ -86,10 +93,11 @@ class LoginState extends ConsumerState<UserLoginPage> {
                 _loginFormKey.currentState!.save();
                 try {
                   await ref.read(userProvider).login(email, password);
-                  //await ref
-                  //    .read(userProvider)
-                  //    .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
-                  Workmanager().registerOneOffTask("task-01", "BACKGROUND_UPDATE");
+                  await ref
+                     .read(userProvider)
+                     .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
+                  Workmanager().cancelByUniqueName("BACKGROUND_UPDATE"); // stop the task, then listen
+                  Workmanager().registerOneOffTask("BACKGROUND_UPDATE", "BACKGROUND_UPDATE");
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)

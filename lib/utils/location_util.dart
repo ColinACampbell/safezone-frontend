@@ -12,57 +12,66 @@ class LocationTuple {
 
 class LocationUtil {
 
-  Future<LocationData>? _initLocationData;
-  Future<Location>? location;
+  // Future<LocationData>? _initLocationData;
+  // Future<Location>? location;
 
-  initLocationObject()
-  {
-    location ??= _getLocationObject();
-  }
+  // initLocationObject()
+  // {
+  //   location ??= _getLocationObject();
+  // }
 
-  Future<Location> _getLocationObject() async {
-    Location location = Location();
+  // Future<Location> _getLocationObject() async {
+  //   Location location = Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+  //   LocationData _locationData;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        //return;
-      }
-    }
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       //return;
+  //     }
+  //   }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        //return;
-      }
-    }
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       //return;
+  //     }
+  //   }
 
-    _initLocationData ??= location.getLocation(); // if it's null, do assignment
+  //   _initLocationData ??= location.getLocation(); // if it's null, do assignment
 
-    location.enableBackgroundMode(enable: true);
+  //   location.enableBackgroundMode(enable: true);
 
-    return location;
-  }
+  //   return location;
+  // }
 
-  Future<LocationTuple> getLocation() async {
-    //Location location = await getLocationObject();
-    initLocationObject();
-    var tuple = LocationTuple(await location!, (await _initLocationData)!);
-    return tuple;
-  }
+  // Future<LocationTuple> getLocation() async {
+  //   //Location location = await getLocationObject();
+  //   initLocationObject();
+  //   var tuple = LocationTuple(await location!, (await _initLocationData)!);
+  //   return tuple;
+  // }
 
-  getUserLocationData(User user, LocationData data) {
+  // getUserLocationData(User user, LocationData data) {
+  //   return json.encode({
+  //     "id": user.id,
+  //     "name": user.firstname + " " + user.lastname,
+  //     "lat": data.latitude,
+  //     "lon": data.longitude
+  //   });
+  // }
+
+  String getUserLocationDataFromCoords(User user, double lat, double long) {
     return json.encode({
       "id": user.id,
       "name": user.firstname + " " + user.lastname,
-      "lat": data.latitude,
-      "lon": data.longitude
+      "lat": lat,
+      "lon": long
     });
   }
 }
