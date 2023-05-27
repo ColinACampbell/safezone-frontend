@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 import 'package:safezone_frontend/user/pages/group/confidant_card.dart';
 import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
+import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/map.dart';
@@ -89,15 +91,15 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
             alignment: Alignment.bottomCenter,
             children: [
               FutureBuilder(
-                  //future: locationUtil.getLocation(),
+                  future: getPosition(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      LocationTuple location = snapshot.data as LocationTuple;
+                      Position location = snapshot.data as Position;
                       return AppMap(
                           locationsStream: broadcast
                               .stream, // pass is the streams from the server
-                          initLat: location.locationData.latitude!,
-                          initLong: location.locationData.longitude!);
+                          initLat: location.latitude,
+                          initLong: location.longitude);
                     } else {
                       return const Text("Loading");
                     }

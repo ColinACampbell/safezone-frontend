@@ -6,6 +6,7 @@ import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:workmanager/workmanager.dart';
 
 class UserHomePage extends ConsumerStatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      await Workmanager().registerOneOffTask("BACKGROUND_UPDATE", "BACKGROUND_UPDATE");
       startListening(ref.read(userProvider).generalGroupsStream);
     });
   }
@@ -46,12 +48,6 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   void dispose() {
     super.dispose();
     stopListening();
-  }
-
-  Future<Position?> getPosition() async
-  {
-    await requestGeoLocatorPermission();
-    return Geolocator.getCurrentPosition();
   }
 
   @override
