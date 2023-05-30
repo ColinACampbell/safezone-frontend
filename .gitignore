@@ -33,6 +33,7 @@ build
 .pub/
 /build/
 .flutter-plugins-dependencies
+flutter-plugins-dependencies
 
 # Web related
 lib/generated_plugin_registrant.dart
