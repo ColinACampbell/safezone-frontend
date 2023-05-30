@@ -8,6 +8,13 @@ class UserSOSPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(child: Text("Welcome to SOS screen"));
+    return Container(
+        child: Column(
+      children: [
+        Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: Image(image: AssetImage('assets/phone_sos.png')))
+      ],
+    ));
   }
 }
