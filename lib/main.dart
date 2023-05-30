@@ -38,7 +38,7 @@ void callbackDispatcher() {
       while (channel.closeCode == null) {
         Position p = await Geolocator.getCurrentPosition();
 
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 10));
         // ignore: avoid_print
         print("I have new positions");
         // ignore: avoid_print
