@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:safezone_frontend/user/pages/user_group.dart';
+import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
+import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
+import 'package:safezone_frontend/user/pages/group/user_group.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
@@ -11,7 +13,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
   UserTabPage.route_name: (context) => UserTabPage(),
-  UserGroupPage.routeName: (context) => UserGroupPage()
+  UserGroupPage.routeName: (context) => UserGroupPage(),
+  GroupConfidants.routeName: (context) => GroupConfidants(),
+  AddGeoFenceScreen.routeName : (context) => AddGeoFenceScreen()
 };
 
 // TODO: Convert to singleton
@@ -38,11 +42,26 @@ class ServerClient {
     return header;
   }
 
-  WebSocketChannel joinGroupSocketRoom(String groupName) {
+  WebSocketChannel joinGroupSocketRoom(int groupId) {
     final channel = WebSocketChannel.connect(
-      Uri.parse('ws://$baseURl:8080/group/$groupName'),
+      Uri.parse('ws://$baseURl:8080/group/$groupId'),
     );
 
+    return channel;
+  }
+
+  WebSocketChannel connectToLocationsStreaming(String userToken) {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://$baseURl:8080/stream-group-locations/$userToken'),
+    );
+    return channel;
+  }
+
+  // Gets all the locations from all the user's mutual members
+  WebSocketChannel connectToMembersLocationUpdates(String userToken) {
+    final channel = WebSocketChannel.connect(
+      Uri.parse('ws://$baseURl:8080/get-group-locations/$userToken'),
+    );
     return channel;
   }
 

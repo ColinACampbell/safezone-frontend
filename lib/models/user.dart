@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   final String email, firstname, lastname;
   final int id;
@@ -17,6 +19,22 @@ class User {
         firstname = json['first_name'],
         lastname = json['last_name'],
         email = json['email'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "first_name": firstname,
+      "last_name": lastname,
+      "email": email,
+      "token": token,
+    };
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return json.encode(toJson());
+  }
 }
 
 class UserLocation {

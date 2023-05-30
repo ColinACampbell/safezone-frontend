@@ -6,14 +6,17 @@ class GroupRepository {
     Map<String, dynamic> body = {"name": name};
     Map<String, dynamic> respBody =
         await serverClient.post("/groups/", body, token: token);
-    print(respBody);
     return Group.fromJson(respBody);
   }
 
   Future<List<Group>> fetchgroups(String token) async {
     List<dynamic> respBody = await serverClient.get("/groups/", token: token);
-    return respBody
-        .map((e) => Group.fromJson(e))
-        .toList();
+    return respBody.map((e) => Group.fromJson(e)).toList();
+  }
+
+  Future<Group> fetchgroup(int groupId, String token) async {
+    Map<String, dynamic> respBody =
+        await serverClient.get("/groups/$groupId", token: token);
+    return Group.fromJson(respBody);
   }
 }

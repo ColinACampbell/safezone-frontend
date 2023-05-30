@@ -12,10 +12,10 @@ import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:safezone_frontend/user/pages/user_addConfidant.dart';
+import 'package:safezone_frontend/user/pages/group/user_add_confidant.dart';
 
 class UserGroupPage extends ConsumerStatefulWidget {
-  static const String routeName = "/user_group_page";
+  static const String routeName = "/user_group_page_2";
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return UserGroupPageState();
@@ -42,13 +42,13 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
       //       .showSnackBar(SnackBar(content: Text("Recieved error $error")));
       // });
 
-      (await locationUtil.getLocationObject())
-          .onLocationChanged
-          .listen((event) {
-        print("Location Changed to ${event.latitude}, ${event.longitude}");
-        groupChannel!.sink
-            .add(locationUtil.getUserLocationData(currentUser, event));
-      });
+      // (await locationUtil.getLocationObject())
+      //     .onLocationChanged
+      //     .listen((event) {
+      //   print("Location Changed to ${event.latitude}, ${event.longitude}");
+      //   groupChannel!.sink
+      //       .add(locationUtil.getUserLocationData(currentUser, event));
+      // });
     });
   }
 
@@ -114,7 +114,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
             alignment: Alignment.bottomCenter,
             children: [
               FutureBuilder(
-                  future: locationUtil.getLocation(),
+                  //future: locationUtil.getLocation(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       LocationTuple location = snapshot.data as LocationTuple;
@@ -160,22 +160,11 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                             itemBuilder: (context, idx) {
                               return buildConfidantCard(group.confidants[idx]);
                             })),
-                    Align(
+                    const Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddConfidantPage(
-                                        groupId: group.name,
-                                      )),
-                            );
-                          },
-                          child: Icon(Icons.add),
-                        ),
+                        child: const Text(""),
                       ),
                     )
                   ],

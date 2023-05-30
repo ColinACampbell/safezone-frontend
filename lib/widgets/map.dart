@@ -10,10 +10,13 @@ import 'package:safezone_frontend/models/user.dart';
 class AppMap extends StatelessWidget {
   double initLat, initLong;
   Stream<dynamic>? locationsStream;
+  void Function(void)? onMapTap;
   AppMap(
       {required this.initLat,
       required this.initLong,
-      required this.locationsStream});
+      required this.locationsStream,
+      onMapTap
+      });
 
   Marker buildLocationMarker(UserLocation userLocation) {
     return Marker(
@@ -57,13 +60,13 @@ class AppMap extends StatelessWidget {
               return UserLocation(location["id"], location["name"],
                   location["lat"], location["lon"]);
             }).toList();
-
-            print(membersLocations);
           }
 
           return FlutterMap(
             options: MapOptions(
-                onTap: (p, l) async {},
+                onTap: (p, l) async {
+                  print(p.global.dy);
+                },
                 center: LatLng(initLat, initLong),
                 zoom: 17.0,
                 maxZoom: 17),

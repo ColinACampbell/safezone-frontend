@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/user/pages/user_groups.dart';
+import 'package:safezone_frontend/user/pages/group/user_groups.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
 import 'package:safezone_frontend/user/pages/user_sos.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
@@ -25,16 +25,19 @@ class UserTabPageState extends ConsumerState {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      //ref.read(locationProvider).initLocationUtil();
+    });
   }
+
+  List<Widget> screens = [
+    UserHomePage(),
+    const UserGroupsPage(),
+    UserSOSPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> screens = [
-      const UserHomePage(),
-      const UserGroupsPage(),
-      UserSOSPage()
-    ];
-
     return Scaffold(
       body: screens[currentIdx],
       floatingActionButton: screens[currentIdx] is UserGroupsPage
@@ -58,6 +61,9 @@ class UserTabPageState extends ConsumerState {
           currentIndex: currentIdx,
           onTap: (index) {
             setState(() {
+              if (screens[index] is! UserHomePage) {
+                screens[0] = const UserHomePage();
+              }
               currentIdx = index;
             });
           },

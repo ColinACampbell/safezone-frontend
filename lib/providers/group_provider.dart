@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/user_provider.dart';
@@ -10,7 +12,7 @@ class GroupProvider extends ChangeNotifier {
   final UserProvider _userProvider;
 
   List<Group> groups = [];
-  Map<String, WebSocketChannel> groupConnections = {};
+  Map<int, WebSocketChannel> groupConnections = {};
 
   GroupProvider(this._groupRepository, this._userProvider);
 
@@ -30,9 +32,25 @@ class GroupProvider extends ChangeNotifier {
     return groups;
   }
 
-  connectToGroup(String groupName) {
-    final newChannel = serverClient.joinGroupSocketRoom(groupName);
-    groupConnections[groupName] = newChannel;
+  connectToGroup(int groupId) {
+    final newChannel = serverClient.joinGroupSocketRoom(groupId);
+    groupConnections[groupId] = newChannel;
     notifyListeners();
+  }
+
+  Future<Group> fetchGroup(int groupId) async {
+    var group = await _groupRepository.fetchgroup(
+        groupId, _userProvider.currentUser!.token!);
+
+    var oldGroup = groups.firstWhere((g) => g.id == groupId);
+    groups.remove(oldGroup);
+    groups.add(group);
+    notifyListeners();
+    return group;
+  }
+
+  Stream<dynamic> getGroupConnectionAsBroadCast(int groupId) {
+    var channel = groupConnections[groupId];
+    return channel!.stream.asBroadcastStream();
   }
 }
