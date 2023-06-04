@@ -4,7 +4,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:safezone_frontend/models/exception.dart';
+import 'package:safezone_frontend/models/group.dart';
+import 'package:safezone_frontend/models/user.dart';
 import 'dart:math' as math;
+
+import 'package:safezone_frontend/providers/providers.dart';
 
 class AddGeoFenceScreen extends ConsumerStatefulWidget {
   static const String routeName = "/group_add_geofence_screen";
@@ -20,6 +25,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
   double pointWidth = 10;
   double scaledWidth = 0;
   double zoomLevel = 0;
+  double radiusInMeters = 0;
   bool isCirclePresent = false; // todo: Implement
 
   @override
@@ -55,18 +61,6 @@ class _AddGeoFenceScreenState extends ConsumerState {
   }
 
   void addMarker(LatLng l, double size) {
-    // Marker marker = Marker(
-    //     width: size,
-    //     height: size,
-    //     point: LatLng(l.latitude, l.longitude),
-    //     builder: (context) {
-    //       return Container(
-    //         decoration: const BoxDecoration(
-    //           color: Color.fromRGBO(0, 0, 250, .9),
-    //         ),
-    //       );
-    //     });
-
     Marker marker = createMarker(l, size);
     setState(() {
       geoFenceMarkers.add(marker);
@@ -87,59 +81,85 @@ class _AddGeoFenceScreenState extends ConsumerState {
         });
   }
 
-  // TODO: Remove
-  // void lat_from_distance(double latitude, distance) {
-  //   var earth = 6378.137, //radius of the earth in kilometer
-  //       pi = math.pi,
-  //       m = (1 / ((2 * pi / 360) * earth)) / 1000; //1 meter in degree
-
-  //   var new_latitude = latitude + (distance * m);
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final routeInfo =
+        ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
+    final group = routeInfo['group'] as Group;
+    final user = routeInfo['user'] as User;
+
     return Scaffold(
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          if (isCirclePresent)
+            FloatingActionButton(
+                child: const Icon(Icons.save),
+                onPressed: () {
+                  var centerMarker = geoFenceMarkers[0];
+                  try {
+                    ref.read(groupsProvider).geofenceUser(
+                        group.id,
+                        user.id,
+                        centerMarker.point.latitude,
+                        centerMarker.point.longitude,
+                        radiusInMeters);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text(" ${user.email} geofenced successfully")));
+                    Navigator.of(context).pop();
+                  } on APIExecption catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(e.message)));
+                  }
+                }),
+          const SizedBox(
+            height: 20,
+          ),
           FloatingActionButton(
-          onPressed: () {
-            if (geoFenceMarkers.length == 2) {
-              Marker m1 = geoFenceMarkers[0];
-              Marker m2 = geoFenceMarkers[1];
+              onPressed: () {
+                if (geoFenceMarkers.length == 2) {
+                  Marker m1 = geoFenceMarkers[0];
+                  Marker m2 = geoFenceMarkers[1];
 
-              double distanceInMeters = getDistanceFromLatLonInKm(
-                      m1.point.latitude,
-                      m1.point.longitude,
-                      m2.point.latitude,
-                      m2.point.longitude) *
-                  1000;
+                  setState(() {
+                    radiusInMeters = getDistanceFromLatLonInKm(
+                            m1.point.latitude,
+                            m1.point.longitude,
+                            m2.point.latitude,
+                            m2.point.longitude) *
+                        1000;
 
-              setState(() {
-                var newCircle = CircleMarker(
-                    point: m1.point,
-                    radius: distanceInMeters,
-                    useRadiusInMeter: true,
-                    borderColor: const Color.fromRGBO(200, 3, 3, .9),
-                    borderStrokeWidth: 1,
-                    color: const Color.fromRGBO(200, 200, 200, .5));
-                if (circleMarkers.length == 0) {
-                  circleMarkers.add(newCircle);
-                } else {
-                  circleMarkers[0] = newCircle;
+                    var newCircle = CircleMarker(
+                        point: m1.point,
+                        radius: radiusInMeters,
+                        useRadiusInMeter: true,
+                        borderColor: const Color.fromRGBO(200, 3, 3, .9),
+                        borderStrokeWidth: 1,
+                        color: const Color.fromRGBO(200, 200, 200, .5));
+                    if (circleMarkers.length == 0) {
+                      circleMarkers.add(newCircle);
+                    } else {
+                      circleMarkers[0] = newCircle;
+                    }
+
+                    isCirclePresent = true;
+                  });
                 }
-              });
-            }
-          },
-          child: const Icon(Icons.add)),
+              },
+              child: const Icon(Icons.add)),
           const SizedBox(height: 20),
-          FloatingActionButton(onPressed: (){
-            setState(() {
-              geoFenceMarkers.clear();
-              circleMarkers.clear();
-            });
-          }, child: const Icon(Icons.delete),)
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                geoFenceMarkers.clear();
+                circleMarkers.clear();
+                isCirclePresent = false;
+              });
+            },
+            child: const Icon(Icons.delete),
+          )
         ],
       ),
       body: Column(

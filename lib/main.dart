@@ -40,14 +40,14 @@ void callbackDispatcher() {
 
         await Future.delayed(const Duration(seconds: 10));
         // ignore: avoid_print
-        //print("I have new positions");
+        print("I have new positions");
         // ignore: avoid_print
-        //print("${p.latitude} ${p.longitude}");
+        print("${p.latitude} ${p.longitude}");
         channel.sink.add(locationUtil.getUserLocationDataFromCoords(
             user, p.latitude, p.longitude));
 
         // ignore: avoid_print
-        //print(channel.closeReason);
+        print(channel.closeReason);
       }
 
       // ignore: avoid_print

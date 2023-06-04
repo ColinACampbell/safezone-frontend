@@ -40,7 +40,7 @@ class _GroupConfidantsState extends ConsumerState<GroupConfidants> {
               child: ListView.builder(
                   itemCount: group.confidants.length,
                   itemBuilder: (context, idx) {
-                    return ConfidantCard(group.confidants[idx],
+                    return ConfidantCard(group.confidants[idx], group,
                         group.confidants.last == group.confidants[idx]);
                   }))
         ],

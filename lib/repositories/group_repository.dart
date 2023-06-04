@@ -19,4 +19,18 @@ class GroupRepository {
         await serverClient.get("/groups/$groupId", token: token);
     return Group.fromJson(respBody);
   }
+
+  Future<GeoRestriction> geofenceUser(int groupId, int userId, double lat, double long,
+      double radius, String token) async {
+    Map<String, dynamic> body = {
+      "user_id": userId,
+      "group_id": groupId,
+      "latitude": lat,
+      "longitude": long,
+      "radius": radius
+    };
+    Map<String, dynamic> respBody =
+        await serverClient.post("/groups/$groupId/restriction",body, token: token);
+    return GeoRestriction.fromJson(respBody);
+  }
 }

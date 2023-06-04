@@ -25,3 +25,21 @@ class Confidant {
       : id = json['id'],
         details = User.fromJsonAsConfidant(json['details']);
 }
+
+class GeoRestriction {
+  final int userId;
+  final int groupId;
+  final int latitude;
+  final int longitude;
+  final int radius;
+
+  GeoRestriction(
+      this.userId, this.groupId, this.latitude, this.longitude, this.radius);
+
+  GeoRestriction.fromJson(Map<String, dynamic> json)
+      : userId = json['user_id'],
+        groupId = json['group_id'],
+        latitude = json['latidude'],
+        longitude = json['longitude'],
+        radius = json["radius"];
+}

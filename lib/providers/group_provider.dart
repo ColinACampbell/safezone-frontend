@@ -47,6 +47,12 @@ class GroupProvider extends ChangeNotifier {
     groups.add(group);
     notifyListeners();
     return group;
+
+  }
+
+  Future<GeoRestriction> geofenceUser(int groupId,int userId, double lat, double long, double radius)
+  {
+    return _groupRepository.geofenceUser(groupId, userId, lat, long, radius, _userProvider.currentUser!.token!);
   }
 
   Stream<dynamic> getGroupConnectionAsBroadCast(int groupId) {

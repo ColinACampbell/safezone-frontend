@@ -28,7 +28,6 @@ class UserGroupPage extends ConsumerStatefulWidget {
 }
 
 class UserGroupPageState extends ConsumerState<UserGroupPage> {
-  
   Timer? locationUpdateTimer;
 
   startListening(WebSocketChannel? groupChannel) {
@@ -47,19 +46,9 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
     Future.delayed(Duration.zero, () async {
       final group = ModalRoute.of(context)!.settings.arguments as Group;
-      final groupChannel =
-          ref.read(groupsProvider).groupConnections[group.id];
-
+      final groupChannel = ref.read(groupsProvider).groupConnections[group.id];
 
       startListening(groupChannel);
-      // ref.read(locationProvider).getLocationStream().listen((event) async {
-      //   print("Location Changed to ${event.latitude}, ${event.longitude}");
-      //   // List<Placemark> placemarks =
-      //   //     await placemarkFromCoordinates(event.latitude!, event.longitude!);
-      //   // print(placemarks.length);
-      //   groupChannel!.sink
-      //       .add(locationUtil.getUserLocationData(currentUser, event));
-      // });
     });
   }
 
@@ -78,17 +67,17 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddConfidantPage(
-                                        groupId: group.name,
-                                      )),
-                            );
-                          },
-                          child: Icon(Icons.add),
-                        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddConfidantPage(
+                      groupId: group.name,
+                    )),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
       body: Column(
         children: [
           CustomAppBar(
@@ -157,8 +146,11 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                       child: ListView.builder(
                         itemCount: group.confidants.length,
                         itemBuilder: (context, idx) {
-                          return ConfidantCard(group.confidants[idx],
-                              group.confidants.last == group.confidants[idx]);
+                          return ConfidantCard(
+                            group.confidants[idx],
+                            group,
+                            group.confidants.last == group.confidants[idx],
+                          );
                         },
                       ),
                     )
