@@ -94,10 +94,13 @@ class LoginState extends ConsumerState<UserLoginPage> {
                 try {
                   await ref.read(userProvider).login(email, password);
                   await ref
-                     .read(userProvider)
-                     .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
-                  Workmanager().cancelByUniqueName("BACKGROUND_UPDATE"); // stop the task, then listen
-                  Workmanager().registerOneOffTask("BACKGROUND_UPDATE", "BACKGROUND_UPDATE");
+                      .read(userProvider)
+                      .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
+                  Workmanager().cancelByUniqueName(
+                      "BACKGROUND_UPDATE_2"); // stop the task, then listen
+                  Workmanager().registerPeriodicTask(
+                      "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2",
+                      frequency: const Duration(seconds: 9));
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)

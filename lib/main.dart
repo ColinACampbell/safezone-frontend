@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ void callbackDispatcher() {
       print(user!.token!);
       WebSocketChannel channel =
           serverClient.connectToLocationsStreaming(user!.token!);
-      channel.stream.handleError((ss){
+      channel.stream.handleError((ss) {
         print(ss);
       });
 
@@ -38,7 +39,8 @@ void callbackDispatcher() {
       while (channel.closeCode == null) {
         Position p = await Geolocator.getCurrentPosition();
 
-        await Future.delayed(const Duration(seconds: 10));
+        sleep(const Duration(seconds: 7));
+
         // ignore: avoid_print
         print("I have new positions");
         // ignore: avoid_print
@@ -54,10 +56,41 @@ void callbackDispatcher() {
       //print("Disconnected from server with reason: ");
       // ignore: avoid_print
       //print(channel.closeReason);
+    } else if (task == "BACKGROUND_UPDATE_2") {
+      User? user = await localStorageUtil.getCurrentUserData();
+      print(user!.token!);
+      WebSocketChannel channel =
+          serverClient.connectToLocationsStreaming(user!.token!);
+      channel.stream.handleError((ss) {
+        print(ss);
+      });
+
+      // ignore: avoid_print
+      print("Connected to server!!");
+
+      await requestGeoLocatorPermission();
+
+      // For reference on the close code
+      // https://pub.dev/documentation/web_socket_channel/latest/web_socket_channel/WebSocketChannel/closeCode.html
+
+      Position p = await Geolocator.getCurrentPosition();
+
+      // ignore: avoid_print
+      print("I have new positions -- From scheduled");
+      // ignore: avoid_print
+      print("${p.latitude} ${p.longitude}");
+      channel.sink.add(locationUtil.getUserLocationDataFromCoords(
+          user, p.latitude, p.longitude));
+
+      channel.sink.close();
+      // ignore: avoid_print
+      print(channel.closeReason);
+
     } else if (task == "BACKGROUND_KEEP_ALIVE") {
-        // ignore: avoid_print
-        print("Keep alive run");
-        await Workmanager().registerOneOffTask("BACKGROUND_UPDATE", "BACKGROUND_UPDATE"); // if the task is already running, it will not override it
+      // ignore: avoid_print
+      print("Keep alive run");
+      await Workmanager().registerOneOffTask("BACKGROUND_UPDATE",
+          "BACKGROUND_UPDATE"); // if the task is already running, it will not override it
     }
     return Future.value(true);
   });
@@ -72,17 +105,15 @@ void main() {
           true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
 
-  Workmanager().registerPeriodicTask("BACKGROUND_KEEP_ALIVE", "BACKGROUND_KEEP_ALIVE",frequency: const Duration(seconds:10));
+
   runApp(ProviderScope(child: App()));
 }
 
-class App extends ConsumerWidget  with WidgetsBindingObserver {
-
-   @override
+class App extends ConsumerWidget with WidgetsBindingObserver {
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        
         break;
       case AppLifecycleState.paused:
         break;

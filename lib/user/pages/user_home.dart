@@ -34,7 +34,6 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      await Workmanager().registerOneOffTask("BACKGROUND_UPDATE", "BACKGROUND_UPDATE");
       startListening(ref.read(userProvider).generalGroupsStream);
     });
   }
