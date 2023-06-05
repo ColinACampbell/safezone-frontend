@@ -40,7 +40,7 @@ dependencies:
   flutter_riverpod: ^1.0.1
   shared_preferences: ^2.0.18
   http: ^0.13.3
-  flutter_barcode_scanner: ^2.0.0
+  simple_barcode_scanner: ^0.0.8
   geocoding: ^2.1.0
   workmanager: ^0.5.1
 

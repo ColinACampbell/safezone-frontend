@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class AddConfidantPage extends StatefulWidget {
   final String groupId;
@@ -13,19 +14,18 @@ class AddConfidantPage extends StatefulWidget {
 }
 
 class _AddConfidantPageState extends State<AddConfidantPage> {
-  String scanResult = "None";
-  int val = 0;
+  int? user_id;
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
         child: Column(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 50),
               child: Text(
-                'Add Confidant $scanResult',
-                style: TextStyle(
+                'Add Confidant',
+                style: const TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0F3460),
@@ -38,7 +38,7 @@ class _AddConfidantPageState extends State<AddConfidantPage> {
                     fontWeight: FontWeight.normal,
                     color: Color(0xFF0F3460),
                     decoration: TextDecoration.none)),
-            Padding(
+            const Padding(
                 padding: EdgeInsets.only(top: 30),
                 child:
                     Image(image: AssetImage('assets/phone_with_barcode.png'))),
@@ -57,23 +57,33 @@ class _AddConfidantPageState extends State<AddConfidantPage> {
         ));
   }
 
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
+
   Future barcodeScanner() async {
     try {
       setState(() async {
-        scanResult = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666',
-          'Cancel',
-          true,
-          ScanMode.BARCODE,
-        );
+        var res = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SimpleBarcodeScannerPage(),
+            ));
+        setState(() {
+          if (isNumeric(res)) {
+            user_id = res;
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Invalid safezone barcode")));
+          }
+        });
       });
-    } on PlatformException catch(e)  {
-      print("An error occured scanning");
-      print(e.message);
-      print(e);
-      setState(() {
-        scanResult = 'Nan';
-      });
+    } on PlatformException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Looks like something went wrong")));
     }
   }
 }
