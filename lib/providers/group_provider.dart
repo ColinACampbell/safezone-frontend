@@ -47,12 +47,28 @@ class GroupProvider extends ChangeNotifier {
     groups.add(group);
     notifyListeners();
     return group;
-
   }
 
-  Future<GeoRestriction> geofenceUser(int groupId,int userId, double lat, double long, double radius)
-  {
-    return _groupRepository.geofenceUser(groupId, userId, lat, long, radius, _userProvider.currentUser!.token!);
+  Future<GeoRestriction> geofenceUser(
+      int groupId, int userId, double lat, double long, double radius) {
+    return _groupRepository.geofenceUser(
+        groupId, userId, lat, long, radius, _userProvider.currentUser!.token!);
+  }
+
+  Future<Group> addConfidant(int userId, int groupId, String role) async {
+    var updatedGroup = await _groupRepository.addConfidant(
+        userId, groupId, role, _userProvider.currentUser!.token!);
+
+    var oldGroup = groups.firstWhere((g) => g.id == groupId);
+
+    for (int i = 0; i < groups.length; i++) {
+      if (groups[i].id == updatedGroup.id) {
+        groups[i].confidants = updatedGroup.confidants;
+        notifyListeners();
+      }
+    }
+
+    return updatedGroup;
   }
 
   Stream<dynamic> getGroupConnectionAsBroadCast(int groupId) {

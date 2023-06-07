@@ -70,9 +70,9 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute( // TODO: Refactor to push named
                 builder: (context) => AddConfidantPage(
-                      groupId: group.name,
+                      groupId: group.id,
                     )),
           );
         },

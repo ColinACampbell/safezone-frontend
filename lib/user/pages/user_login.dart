@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/providers/user_provider.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
-import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 import 'package:workmanager/workmanager.dart';
@@ -105,6 +103,9 @@ class LoginState extends ConsumerState<UserLoginPage> {
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(e.message)));
+                } on Exception catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               })
         ],

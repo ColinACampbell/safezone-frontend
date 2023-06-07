@@ -4,7 +4,7 @@ class Group {
   final String name;
   final int id;
   final int createdBy;
-  final List<Confidant> confidants;
+  List<Confidant> confidants;
   Group(this.id, this.createdBy, this.name, this.confidants);
 
   Group.fromJson(Map<String, dynamic> json)
@@ -14,6 +14,10 @@ class Group {
         confidants = (json['confidants'] as List)
             .map((jsonConfidant) => Confidant.fromJson(jsonConfidant))
             .toList();
+
+  updateConfidants(List<Confidant> newConfidants) {
+    confidants = newConfidants;
+  }
 }
 
 class Confidant {
