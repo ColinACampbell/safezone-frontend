@@ -1,21 +1,28 @@
 import 'dart:convert';
+import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/user/pages/group/user_group.dart';
+import 'package:safezone_frontend/user/pages/medical_record/user_medical_records.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+const accentColor =  Color.fromRGBO(233, 69, 96, 1);
+const primaryColor = Colors.blue;
+
+
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
   UserTabPage.route_name: (context) => UserTabPage(),
   UserGroupPage.routeName: (context) => UserGroupPage(),
   GroupConfidants.routeName: (context) => GroupConfidants(),
-  AddGeoFenceScreen.routeName : (context) => AddGeoFenceScreen()
+  AddGeoFenceScreen.routeName : (context) => AddGeoFenceScreen(),
+  UserMedicalRecordsScreen.routeName : (context) => UserMedicalRecordsScreen()
 };
 
 // TODO: Convert to singleton
