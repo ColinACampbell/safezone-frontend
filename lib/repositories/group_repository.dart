@@ -33,14 +33,18 @@ class GroupRepository {
     return Group.fromJson(respBody);
   }
 
+
+  // toTime and fromTime is in 24 hours
   Future<GeoRestriction> geofenceUser(int groupId, int userId, double lat,
-      double long, double radius, String token) async {
+      double long, double radius, int fromTime, int toTime, String token) async {
     Map<String, dynamic> body = {
       "user_id": userId,
       "group_id": groupId,
       "latitude": lat,
       "longitude": long,
-      "radius": radius
+      "radius": radius,
+      "from_time":fromTime,
+      "to_time":toTime
     };
     Map<String, dynamic> respBody = await serverClient
         .post("/groups/$groupId/restriction", body, token: token);

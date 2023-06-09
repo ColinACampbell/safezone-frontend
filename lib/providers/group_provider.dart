@@ -49,10 +49,11 @@ class GroupProvider extends ChangeNotifier {
     return group;
   }
 
+  // TODO : Add from_time and to_time to the function as a param
   Future<GeoRestriction> geofenceUser(
       int groupId, int userId, double lat, double long, double radius) {
     return _groupRepository.geofenceUser(
-        groupId, userId, lat, long, radius, _userProvider.currentUser!.token!);
+        groupId, userId, lat, long, radius, 18, 21,_userProvider.currentUser!.token!);
   }
 
   Future<Group> addConfidant(int userId, int groupId, String role) async {
