@@ -44,6 +44,7 @@ class UserTabPageState extends ConsumerState {
           ? FloatingActionButton(
               child: const Icon(Icons.add),
               onPressed: () {
+                // TODO : Apply dry
                 showModalBottomSheet(
                     isScrollControlled:
                         true, // take up the full height required

@@ -13,7 +13,7 @@ class MedicalRecordProvider extends ChangeNotifier {
 
   MedicalRecordProvider(this._medicalRecordRepository, this._userProvider);
 
-  createGroup(String title, String description) async {
+  createRecord(String title, String description) async {
     final newRecord = await _medicalRecordRepository.createRecord(
         title, description, _userProvider.currentUser!.token!);
     records.add(newRecord);

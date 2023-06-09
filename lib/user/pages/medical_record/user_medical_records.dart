@@ -6,6 +6,7 @@ import 'package:safezone_frontend/models/medical_record.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/medical_record/medical_record_card.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
+import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 class UserMedicalRecordsScreen extends ConsumerStatefulWidget {
@@ -42,13 +43,20 @@ class _UserMedicalRecordsScreenState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-
     var medRecords = ref.watch(medicalRecordProvider).records;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // TODO: Implement
+            showModalBottomSheet(
+                isScrollControlled: true, // take up the full height required
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                context: context,
+                builder: (context) {
+                  return buildCreateMedicalRecordBottomSheet();
+                });
           },
           child: Icon(Icons.add)),
       body: Column(
@@ -65,6 +73,73 @@ class _UserMedicalRecordsScreenState extends ConsumerState {
                     return MedicalRecordCard(
                         medRecords[idx], medRecords.last == medRecords[idx]);
                   }))
+        ],
+      ),
+    );
+  }
+
+  buildCreateMedicalRecordBottomSheet() {
+    String recordTitle = "";
+    String recordDescription = "";
+    final _form = GlobalKey<FormState>();
+
+    return Container(
+      //padding: const EdgeInsets.all(15),
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          left: 10,
+          top: 10,
+          right: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Form(
+            key: _form,
+            child: Column(
+              children: [
+                AppTextField(
+                    hintText: "Enter Record Title",
+                    autoFocus: true,
+                    onSaved: (val) {
+                      recordTitle = val!;
+                    }),
+                SizedBox(height: 10),
+                AppTextField(
+                    hintText: "Enter Record Description",
+                    autoFocus: true,
+                    onSaved: (val) {
+                      recordDescription = val!;
+                    })
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                Expanded(
+                    child: AppButton(
+                  text: "Add Medical Record",
+                  onTap: () async {
+                    _form.currentState!.save();
+                    try {
+                      await ref
+                          .read(medicalRecordProvider)
+                          .createRecord(recordTitle, recordDescription);
+                      Navigator.pop(context);
+                    } on APIExecption catch (e) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.message)));
+                    } on Exception catch (e) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
+                  },
+                  width: 100,
+                ))
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -4,6 +4,7 @@ class AppTextField extends StatelessWidget {
   final String hintText;
   bool isPassword = false;
   bool autoFocus = false;
+  bool isMultiLine = false;
   void Function(String?) onSaved;
 
   AppTextField(
@@ -11,12 +12,14 @@ class AppTextField extends StatelessWidget {
       required this.hintText,
       this.isPassword = false,
       this.autoFocus = false,
+      this.isMultiLine = false,
       required this.onSaved})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: isMultiLine ? 10 : 1,
       autofocus: autoFocus,
       onSaved: onSaved,
       decoration: InputDecoration(
