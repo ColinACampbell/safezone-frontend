@@ -96,9 +96,11 @@ class LoginState extends ConsumerState<UserLoginPage> {
                       .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
                   Workmanager().cancelByUniqueName(
                       "BACKGROUND_UPDATE_2"); // stop the task, then listen
-                  Workmanager().registerPeriodicTask(
-                      "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2",
-                      frequency: const Duration(seconds: 9));
+                  // Workmanager().registerPeriodicTask(
+                  //     "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2",
+                  //     frequency: const Duration(seconds: 9));
+                  Workmanager().registerOneOffTask(
+                      "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2");
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)

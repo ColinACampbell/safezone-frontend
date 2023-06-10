@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:safezone_frontend/models/user.dart';
 // import 'package:latlong2/latlong.dart';
 // import 'package:location/location.dart';
 
-class AppMap extends StatelessWidget {
+class AppMap extends ConsumerWidget {
   double initLat, initLong;
   Stream<dynamic>? locationsStream;
   void Function(void)? onMapTap;
@@ -15,8 +16,7 @@ class AppMap extends StatelessWidget {
       {required this.initLat,
       required this.initLong,
       required this.locationsStream,
-      onMapTap
-      });
+      onMapTap});
 
   Marker buildLocationMarker(UserLocation userLocation) {
     return Marker(
@@ -46,7 +46,7 @@ class AppMap extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder(
         stream: locationsStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
@@ -55,10 +55,11 @@ class AppMap extends StatelessWidget {
             membersLocations =
                 (json.decode(snapshot.data as String) as List<dynamic>)
                     .map((element) {
-              print(element);
               final location = json.decode(element) as Map<String, dynamic>;
               return UserLocation(location["id"], location["name"],
-                  location["lat"], location["lon"]);
+                  location["lat"], location["lon"],
+                  geoFlag: location['geo_flag'],
+                  geoFenceDistance: location['geo_fence_distance']);
             }).toList();
           }
 

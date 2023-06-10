@@ -26,6 +26,17 @@ void callbackDispatcher() {
       WebSocketChannel channel =
           serverClient.connectToLocationsStreaming(user!.token!);
 
+
+      channel.stream.listen((event)  {
+        print("Message from server is thread is....");
+        print(event);
+      },onError: (ee){
+        print("Soo. the error is");
+        print(ee);
+      },onDone: (){
+        print("Soo. its just done now");
+      });
+
       // ignore: avoid_print
       print("Connected to server!!");
 
@@ -34,20 +45,22 @@ void callbackDispatcher() {
       // For reference on the close code
       // https://pub.dev/documentation/web_socket_channel/latest/web_socket_channel/WebSocketChannel/closeCode.html
 
-      Position p = await Geolocator.getCurrentPosition();
+      while (true) {
+        Position p = await Geolocator.getCurrentPosition();
 
-      // ignore: avoid_print
-      print("I have new positions -- From scheduled");
-      // ignore: avoid_print
-      print("${p.latitude} ${p.longitude}");
-      channel.sink.add(locationUtil.getUserLocationDataFromCoords(
-          user, p.latitude, p.longitude));
+        sleep(const Duration(seconds: 5));
+        // ignore: avoid_print
+        print("I have new positions -- From scheduled");
+        // ignore: avoid_print
+        print("${p.latitude} ${p.longitude}");
+        channel.sink.add(locationUtil.getUserLocationDataFromCoords(
+            user, p.latitude, p.longitude));
 
-      channel.sink.close();
-      print("Ending connection to server");
+        //channel.sink.close();
+      }
       // ignore: avoid_print
       print(channel.closeReason);
-    } 
+    }
     return Future.value(true);
   });
 }

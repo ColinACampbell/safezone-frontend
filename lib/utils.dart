@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
