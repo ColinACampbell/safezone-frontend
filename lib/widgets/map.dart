@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:safezone_frontend/main.dart';
 import 'package:safezone_frontend/models/user.dart';
-// import 'package:latlong2/latlong.dart';
-// import 'package:location/location.dart';
+import 'package:safezone_frontend/providers/providers.dart';
 
-class AppMap extends ConsumerWidget {
+class AppMap extends ConsumerStatefulWidget {
   double initLat, initLong;
   Stream<dynamic>? locationsStream;
   void Function(void)? onMapTap;
@@ -17,6 +17,31 @@ class AppMap extends ConsumerWidget {
       required this.initLong,
       required this.locationsStream,
       onMapTap});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _AppMapState();
+  }
+}
+
+class _AppMapState extends ConsumerState<AppMap> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      // Listen out for geo restriction violation
+      widget.locationsStream!.asBroadcastStream().listen((event) {
+        var membersLocations =
+            (json.decode(event as String) as List<dynamic>).map((element) {
+          final location = json.decode(element) as Map<String, dynamic>;
+          return UserLocation(location["id"], location["name"], location["lat"],
+              location["lon"],
+              geoFlag: location['geo_flag'],
+              geoFenceDistance: location['geo_fence_distance']);
+        }).toList();
+        ref.watch(notificationProvider).processLocations(membersLocations);
+      });
+    });
+  }
 
   Marker buildLocationMarker(UserLocation userLocation) {
     return Marker(
@@ -46,9 +71,9 @@ class AppMap extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: locationsStream,
+        stream: widget.locationsStream,
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           List<UserLocation> membersLocations = [];
           if (snapshot.hasData) {
@@ -68,7 +93,7 @@ class AppMap extends ConsumerWidget {
                 onTap: (p, l) async {
                   print(p.global.dy);
                 },
-                center: LatLng(initLat, initLong),
+                center: LatLng(widget.initLat, widget.initLong),
                 zoom: 17.0,
                 maxZoom: 17),
             layers: [
@@ -82,8 +107,8 @@ class AppMap extends ConsumerWidget {
                         .map((mLocation) => buildLocationMarker(mLocation))
                         .toList()
                     : [
-                        buildLocationMarker(
-                            UserLocation(0, "You", initLat, initLong))
+                        buildLocationMarker(UserLocation(
+                            0, "You", widget.initLat, widget.initLong))
                       ],
               ),
             ],

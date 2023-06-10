@@ -13,10 +13,11 @@ class NotificationProvider extends ChangeNotifier {
     for (int i = 0; i < locations.length; i++) {
       var location = locations[i];
       if (location.geoFlag &&
-          !geoFenceFlags.keys.toList().contains(location.id)) {
+          !geoFenceFlags.keys.toList().contains(location.id) && location.id != _userProvider.currentUser!.id) {
         print("User Geo Restriction violation found");
         geoFenceFlags[location.id] = true;
       }
     }
+    notifyListeners();
   }
 }
