@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
+import 'package:safezone_frontend/utils.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:workmanager/workmanager.dart';
 
 // TODO : Add form validation
@@ -96,16 +98,20 @@ class LoginState extends ConsumerState<UserLoginPage> {
                       .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
                   Workmanager().cancelByUniqueName(
                       "BACKGROUND_UPDATE_2"); // stop the task, then listen
-                  // Workmanager().registerPeriodicTask(
-                  //     "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2",
-                  //     frequency: const Duration(seconds: 9));
+
                   Workmanager().registerOneOffTask(
                       "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2");
+
+                  WebSocketChannel channel =
+                      await serverClient.connectToLocationsStreaming(
+                          ref.read(userProvider).currentUser!.token!);
+
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(e.message)));
                 } on Exception catch (e) {
+                  print(e.toString());
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(e.toString())));
                 }

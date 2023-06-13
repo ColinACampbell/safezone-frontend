@@ -1,7 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:safezone_frontend/models/user.dart';
+import 'package:safezone_frontend/utils.dart';
+import 'package:safezone_frontend/utils/geo_locator.dart';
+import 'package:safezone_frontend/utils/local_storage_util.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class LocationTuple {
   final Location location;
@@ -11,7 +18,6 @@ class LocationTuple {
 }
 
 class LocationUtil {
-
   // Future<LocationData>? _initLocationData;
   // Future<Location>? location;
 
@@ -77,3 +83,51 @@ class LocationUtil {
 }
 
 final locationUtil = LocationUtil();
+
+Future<bool> streamLocationToServer() async {
+  await requestGeoLocatorPermission();
+
+  User? user = await localStorageUtil.getCurrentUserData();
+  print("Trying to connect");
+  print(user!.token!);
+  IOWebSocketChannel? channel;
+  try {
+    channel = await serverClient.connectToLocationsStreaming(user!.token!);
+  } on Exception catch (e) {
+    print(e.toString());
+    return Future.value(false);
+  }
+
+  channel.stream.listen((event) {
+    print("Message from server is thread is....");
+    print(event);
+  }, onError: (ee) {
+    print("Soo. the error is");
+    print(ee);
+  }, onDone: () {
+    print("Soo. its just done now");
+  });
+
+  // ignore: avoid_print
+  print("Connected to server!!");
+  print(channel.closeReason);
+
+  // For reference on the close code
+  // https://pub.dev/documentation/web_socket_channel/latest/web_socket_channel/WebSocketChannel/closeCode.html
+
+  while (true) {
+    Position p = await Geolocator.getCurrentPosition();
+    channel.sink.add(locationUtil.getUserLocationDataFromCoords(
+        user, p.latitude, p.longitude));
+    print("I have new positions -- From scheduled");
+    // ignore: avoid_print
+    print("${p.latitude} ${p.longitude}");
+
+    sleep(const Duration(seconds: 3));
+    // ignore: avoid_print
+
+    if (channel.closeCode != null) {
+      return Future.value(false);
+    }
+  }
+}

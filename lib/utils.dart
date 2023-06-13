@@ -9,33 +9,35 @@ import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-const accentColor =  Color.fromRGBO(233, 69, 96, 1);
+const accentColor = Color.fromRGBO(233, 69, 96, 1);
 const primaryColor = Colors.blue;
-
 
 Map<String, WidgetBuilder> appRoutes = {
   UserLoginPage.route_name: (context) => UserLoginPage(),
   UserTabPage.route_name: (context) => UserTabPage(),
   UserGroupPage.routeName: (context) => UserGroupPage(),
   GroupConfidants.routeName: (context) => GroupConfidants(),
-  AddGeoFenceScreen.routeName : (context) => AddGeoFenceScreen(),
-  UserMedicalRecordsScreen.routeName : (context) => UserMedicalRecordsScreen()
+  AddGeoFenceScreen.routeName: (context) => AddGeoFenceScreen(),
+  UserMedicalRecordsScreen.routeName: (context) => UserMedicalRecordsScreen()
 };
 
 // TODO: Convert to singleton
 // TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
-  final baseURl = "localhost";
+  bool isProd = true;
+  final baseURl =
+      "e880-69-160-120-28.ngrok-free.app"; //"safezone-backend-nneblk5eda-uc.a.run.app";
   late String apiURL, socketURL;
 
   final header = {};
 
   ServerClient() {
-    apiURL = "http://$baseURl:8080";
-    socketURL = "ws://$baseURl:8080";
+    apiURL = isProd ? "https://$baseURl" : "http://$baseURl";
+    socketURL = isProd? "wss://$baseURl": "ws://$baseURl";
   }
 
   buildHeaders({String? token}) {
@@ -50,29 +52,31 @@ class ServerClient {
 
   WebSocketChannel joinGroupSocketRoom(int groupId) {
     final channel = WebSocketChannel.connect(
-      Uri.parse('ws://$baseURl:8080/group/$groupId'),
+      Uri.parse('$socketURL/group/$groupId'),
     );
 
     return channel;
   }
 
-  WebSocketChannel connectToLocationsStreaming(String userToken) {
-    final channel = WebSocketChannel.connect(
-      Uri.parse('ws://$baseURl:8080/stream-group-locations/$userToken'),
-    );
+  Future<IOWebSocketChannel> connectToLocationsStreaming(String userToken) async {
+    print('$socketURL/stream-group-locations/$userToken');
+    final channel = IOWebSocketChannel.connect(
+        Uri.parse('$socketURL/stream-group-locations/$userToken'),
+        headers: {'Connection': 'upgrade', 'Upgrade': 'websocket'});
     return channel;
   }
 
   // Gets all the locations from all the user's mutual members
   WebSocketChannel connectToMembersLocationUpdates(String userToken) {
     final channel = WebSocketChannel.connect(
-      Uri.parse('ws://$baseURl:8080/get-group-locations/$userToken'),
+      Uri.parse('$socketURL/get-group-locations/$userToken'),
     );
     return channel;
   }
 
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,
       {String? token}) async {
+    print("$apiURL$endPoint");
     var resp = await httpClient.post(
       Uri.parse("$apiURL$endPoint"),
       headers: buildHeaders(token: token),
