@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/user_groups.dart';
@@ -25,14 +27,9 @@ class UserTabPage extends ConsumerStatefulWidget {
 class UserTabPageState extends ConsumerState {
   int currentIdx = 0;
 
-  startListening() {
-    streamLocationToServer(); 
-  }
-
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      //startListening();
     });
   }
 

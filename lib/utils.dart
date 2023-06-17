@@ -30,7 +30,7 @@ class ServerClient {
   final httpClient = http.Client();
   bool isProd = true;
   final baseURl =
-      "e880-69-160-120-28.ngrok-free.app"; //"safezone-backend-nneblk5eda-uc.a.run.app";
+      "7b45-2605-a200-9201-3664-ddbe-6250-e234-e617.ngrok-free.app";//"localhost:8080"; //"safezone-backend-nneblk5eda-uc.a.run.app";
   late String apiURL, socketURL;
 
   final header = {};
@@ -59,7 +59,6 @@ class ServerClient {
   }
 
   Future<IOWebSocketChannel> connectToLocationsStreaming(String userToken) async {
-    print('$socketURL/stream-group-locations/$userToken');
     final channel = IOWebSocketChannel.connect(
         Uri.parse('$socketURL/stream-group-locations/$userToken'),
         headers: {'Connection': 'upgrade', 'Upgrade': 'websocket'});
@@ -103,6 +102,20 @@ class ServerClient {
       throw APIExecption(json.decode(resp.body)['detail']);
     }
     return jsonDecode(resp.body);
+  }
+
+  Future<bool> callHook(String hookname, Map<String,dynamic> data, String token) async {
+     var resp = await httpClient.post(
+      Uri.parse("$apiURL/webhook/$hookname"),
+      headers: buildHeaders(token: token),
+      body: json.encode(data),
+    );
+
+    if (resp.statusCode >= 400) {
+      return false;
+    } 
+
+    return true;
   }
 }
 

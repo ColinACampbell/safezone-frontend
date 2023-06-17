@@ -91,10 +91,12 @@ Future<bool> streamLocationToServer() async {
   print("Trying to connect");
   print(user!.token!);
   IOWebSocketChannel? channel;
+  bool connectionError = false;
   try {
     channel = await serverClient.connectToLocationsStreaming(user!.token!);
   } on Exception catch (e) {
     print(e.toString());
+    connectionError = true;
     return Future.value(false);
   }
 
@@ -110,7 +112,6 @@ Future<bool> streamLocationToServer() async {
 
   // ignore: avoid_print
   print("Connected to server!!");
-  print(channel.closeReason);
 
   // For reference on the close code
   // https://pub.dev/documentation/web_socket_channel/latest/web_socket_channel/WebSocketChannel/closeCode.html
@@ -129,5 +130,34 @@ Future<bool> streamLocationToServer() async {
     if (channel.closeCode != null) {
       return Future.value(false);
     }
+  }
+}
+
+Future<bool> streamLocationToServerViaWebHook() async {
+  await requestGeoLocatorPermission();
+
+  User? user = await localStorageUtil.getCurrentUserData();
+
+  while (true) {
+    Position p = await Geolocator.getCurrentPosition();
+    // channel.sink.add(locationUtil.getUserLocationDataFromCoords(
+    //     user, p.latitude, p.longitude));
+
+    //final userLocationData = locationUtil.getUserLocationDataFromCoords(user, p.latitude, p.longitude);
+    final isSuccess = await serverClient.callHook("update-location",{
+      "id":user!.id,
+      "lat":p.latitude,
+      "lon":p.longitude,
+      "name":"${user.firstname} ${user.lastname}"
+    }, user.token!);
+    print("Send location via hook is $isSuccess");
+
+    // ignore: avoid_print
+    print("I have new positions -- From Webhoot");
+    // ignore: avoid_print
+    print("${p.latitude} ${p.longitude}");
+
+    sleep(const Duration(seconds: 3));
+
   }
 }

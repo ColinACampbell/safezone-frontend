@@ -3,16 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/user_login.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
 import 'package:safezone_frontend/utils.dart';
-import 'package:safezone_frontend/utils/geo_locator.dart';
-import 'package:safezone_frontend/utils/local_storage_util.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:workmanager/workmanager.dart';
 
 @pragma(
@@ -21,7 +17,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((String task, inputData) async {
     DartPluginRegistrant.ensureInitialized();
     if (task == "BACKGROUND_UPDATE_2") {
-      return streamLocationToServer();
+      return streamLocationToServerViaWebHook();
     }
     return Future.value(true);
   });

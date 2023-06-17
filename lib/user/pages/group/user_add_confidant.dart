@@ -31,7 +31,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
                 padding: EdgeInsets.only(top: 50),
                 child: Text(
                   'Add Confidant',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0F3460),
@@ -39,7 +39,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
                 ),
               ),
               Text('Scan Barcode to add confidant $userId',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                       color: Color(0xFF0F3460),
