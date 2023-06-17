@@ -102,9 +102,9 @@ class LoginState extends ConsumerState<UserLoginPage> {
                   Workmanager().registerOneOffTask(
                       "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2");
 
-                  WebSocketChannel channel =
-                      await serverClient.connectToLocationsStreaming(
-                          ref.read(userProvider).currentUser!.token!);
+                  // WebSocketChannel channel =
+                  //     await serverClient.connectToLocationsStreaming(
+                  //         ref.read(userProvider).currentUser!.token!);
 
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
@@ -198,6 +198,11 @@ class LoginState extends ConsumerState<UserLoginPage> {
                   await ref
                       .read(userProvider)
                       .connectToGeneralLocationsStreaming(); // join the stream to get all the locations
+                  Workmanager().cancelByUniqueName(
+                      "BACKGROUND_UPDATE_2"); // stop the task, then listen
+
+                  Workmanager().registerOneOffTask(
+                      "BACKGROUND_UPDATE_2", "BACKGROUND_UPDATE_2");
                   Navigator.of(context).popAndPushNamed(UserTabPage.route_name);
                 } on APIExecption catch (e) {
                   ScaffoldMessenger.of(context)
@@ -216,30 +221,32 @@ class LoginState extends ConsumerState<UserLoginPage> {
       child: Container(
           width: MediaQuery.of(context).size.width * .70,
           height: MediaQuery.of(context).size.height * .90,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              isInLoginState
-                  ? loginForm(context, ref)
-                  : signUpForm(context, ref),
-              Container(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Don't have an account?"),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isInLoginState = !isInLoginState;
-                      });
-                    },
-                    child: const Text("Sign up"),
-                  ),
-                ],
-              )),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                isInLoginState
+                    ? loginForm(context, ref)
+                    : signUpForm(context, ref),
+                Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?"),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isInLoginState = !isInLoginState;
+                        });
+                      },
+                      child: const Text("Sign up"),
+                    ),
+                  ],
+                )),
+              ],
+            ),
           )),
     ));
   }

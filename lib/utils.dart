@@ -28,9 +28,8 @@ Map<String, WidgetBuilder> appRoutes = {
 // TODO: Build headers
 class ServerClient {
   final httpClient = http.Client();
-  bool isProd = true;
-  final baseURl =
-      "7b45-2605-a200-9201-3664-ddbe-6250-e234-e617.ngrok-free.app";//"localhost:8080"; //"safezone-backend-nneblk5eda-uc.a.run.app";
+  bool isProd = false;
+  final baseURl = "localhost:8080"; //"safezone-backend-nneblk5eda-uc.a.run.app";
   late String apiURL, socketURL;
 
   final header = {};
@@ -76,6 +75,7 @@ class ServerClient {
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,
       {String? token}) async {
     print("$apiURL$endPoint");
+
     var resp = await httpClient.post(
       Uri.parse("$apiURL$endPoint"),
       headers: buildHeaders(token: token),
@@ -87,6 +87,8 @@ class ServerClient {
       print(resp.body);
       throw APIExecption(json.decode(resp.body)['detail']);
     }
+      
+    print("Body is  " +resp.body);
     return jsonDecode(resp.body);
   }
 
@@ -98,7 +100,6 @@ class ServerClient {
 
     if (resp.statusCode >= 400) {
       // ignore: avoid_print
-      print(resp.body);
       throw APIExecption(json.decode(resp.body)['detail']);
     }
     return jsonDecode(resp.body);
