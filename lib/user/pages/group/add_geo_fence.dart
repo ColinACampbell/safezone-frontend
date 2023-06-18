@@ -10,6 +10,7 @@ import 'package:safezone_frontend/models/user.dart';
 import 'dart:math' as math;
 
 import 'package:safezone_frontend/providers/providers.dart';
+import 'package:safezone_frontend/widgets/app_text_field.dart';
 
 class AddGeoFenceScreen extends ConsumerStatefulWidget {
   static const String routeName = "/group_add_geofence_screen";
@@ -97,22 +98,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
             FloatingActionButton(
                 child: const Icon(Icons.save),
                 onPressed: () {
-                  var centerMarker = geoFenceMarkers[0];
-                  try {
-                    ref.read(groupsProvider).geofenceUser(
-                        group.id,
-                        user.id,
-                        centerMarker.point.latitude,
-                        centerMarker.point.longitude,
-                        radiusInMeters);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text(" ${user.email} geofenced successfully")));
-                    Navigator.of(context).pop();
-                  } on APIExecption catch (e) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(e.message)));
-                  }
+                  buildAddTimeDialog(context, user, group);
                 }),
           const SizedBox(
             height: 20,
@@ -213,6 +199,128 @@ class _AddGeoFenceScreenState extends ConsumerState {
           )
         ],
       ),
+    );
+  }
+
+  int convertToUTC(int hour, int offset) {
+    // Calculate the adjusted hour in UTC
+    print(hour);
+    print(offset);
+    int utcHour = (hour - offset) % 24;
+    if (utcHour < 0) {
+      utcHour += 24;
+    }
+
+    // Return the UTC hour
+    return utcHour;
+  }
+
+  int fromTime = -1;
+  int toTime = -1;
+  TimeOfDay? selectedFromTime;
+  TimeOfDay? selectedToTime;
+  buildAddTimeDialog(BuildContext context, User user, Group group) {
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Geofence'),
+          content: StatefulBuilder(builder: (context, setState) {
+            return Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(children: [
+                    selectedFromTime == null
+                        ? Text("Select From Hour")
+                        : Text(
+                            "${selectedFromTime!.hour}:${selectedFromTime!.minute}"),
+                    TextButton(
+                        onPressed: () {
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) {
+                            setState(() {
+                              selectedFromTime = value;
+                              fromTime = selectedFromTime!.hour;
+                            });
+                          });
+                        },
+                        child: Text("Select Time"))
+                  ]),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(children: [
+                    toTime == -1
+                        ? Text("Select To Hour")
+                        : Text(
+                            "${selectedToTime!.hour}:${selectedToTime!.minute}"),
+                    TextButton(
+                        onPressed: () {
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) {
+                            setState(() {
+                              selectedToTime = value;
+                              toTime = selectedToTime!.hour;
+                            });
+                          });
+                        },
+                        child: Text("Select Time"))
+                  ])
+                ],
+              ),
+            );
+          }),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Sumbit'),
+              onPressed: () {
+                var centerMarker = geoFenceMarkers[0];
+                try {
+                  var now = DateTime.now();
+                  var timezoneOffset = now.timeZoneOffset.inHours;
+                  ref.read(groupsProvider).geofenceUser(
+                      group.id,
+                      user.id,
+                      centerMarker.point.latitude,
+                      centerMarker.point.longitude,
+                      radiusInMeters,
+                      convertToUTC(fromTime, timezoneOffset),
+                      convertToUTC(toTime,
+                          timezoneOffset)); // convert the time to utc on submit
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(" ${user.email} geofenced successfully")));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } on APIExecption catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.message)));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
