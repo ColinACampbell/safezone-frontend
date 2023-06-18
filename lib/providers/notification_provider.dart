@@ -8,11 +8,18 @@ import 'package:safezone_frontend/providers/user_provider.dart';
 class NotificationProvider extends ChangeNotifier {
   UserProvider _userProvider;
   Map<int, bool> geoFenceFlags = {};
+  Map<int, UserLocation?> membersLocations = {};
   NotificationProvider(this._userProvider);
 
   void processLocations(List<UserLocation> locations) async {
     for (int i = 0; i < locations.length; i++) {
       var location = locations[i];
+
+      if (!membersLocations.containsKey(location.id))
+      {
+        membersLocations[location.id] = locations[i];
+      }
+
       if (location.geoFlag &&
           !geoFenceFlags.keys.toList().contains(location.id) &&
           location.id != _userProvider.currentUser!.id) {

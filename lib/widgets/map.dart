@@ -8,6 +8,33 @@ import 'package:safezone_frontend/main.dart';
 import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 
+Marker buildLocationMarker(UserLocation userLocation) {
+  return Marker(
+    width: 80.0,
+    height: 80.0,
+    point: LatLng(userLocation.lat, userLocation.lon),
+    builder: (ctx) => Container(
+        child: Column(
+      children: [
+        Container(
+            padding: const EdgeInsets.all(5),
+            width: 120,
+            color: Colors.red,
+            child: Center(
+              child: Text(
+                userLocation.name,
+                style: const TextStyle(color: Colors.white),
+              ),
+            )),
+        const Icon(
+          Icons.location_on,
+          color: Colors.red,
+        )
+      ],
+    )),
+  );
+}
+
 class AppMap extends ConsumerStatefulWidget {
   double initLat, initLong;
   Stream<dynamic>? locationsStream;
@@ -41,33 +68,6 @@ class _AppMapState extends ConsumerState<AppMap> {
         ref.watch(notificationProvider).processLocations(membersLocations);
       });
     });
-  }
-
-  Marker buildLocationMarker(UserLocation userLocation) {
-    return Marker(
-      width: 80.0,
-      height: 80.0,
-      point: LatLng(userLocation.lat, userLocation.lon),
-      builder: (ctx) => Container(
-          child: Column(
-        children: [
-          Container(
-              padding: const EdgeInsets.all(5),
-              width: 120,
-              color: Colors.red,
-              child: Center(
-                child: Text(
-                  userLocation.name,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              )),
-          const Icon(
-            Icons.location_on,
-            color: Colors.red,
-          )
-        ],
-      )),
-    );
   }
 
   @override

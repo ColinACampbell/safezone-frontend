@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/models/user.dart';
+import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 
-class ConfidantCard extends StatelessWidget {
+class ConfidantCard extends ConsumerWidget {
   final Confidant _confidant;
   final Group _group;
   final bool isLastCard;
-  const ConfidantCard(this._confidant, this._group,this.isLastCard, {Key? key})
+  const ConfidantCard(this._confidant, this._group, this.isLastCard, {Key? key})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onDoubleTap: () {
-        Navigator.pushNamed(context, AddGeoFenceScreen.routeName, arguments: {"user":_confidant.details, "group":_group});
+        ref.read(groupsProvider).connectToGroup(_group.id);
+        Navigator.pushNamed(context, AddGeoFenceScreen.routeName,
+            arguments: {"user": _confidant.details, "group": _group});
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
