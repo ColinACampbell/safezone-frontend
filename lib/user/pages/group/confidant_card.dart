@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
-import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 

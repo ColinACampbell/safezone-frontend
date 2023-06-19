@@ -60,8 +60,6 @@ class GroupProvider extends ChangeNotifier {
     var updatedGroup = await _groupRepository.addConfidant(
         userId, groupId, role, _userProvider.currentUser!.token!);
 
-    var oldGroup = groups.firstWhere((g) => g.id == groupId);
-
     for (int i = 0; i < groups.length; i++) {
       if (groups[i].id == updatedGroup.id) {
         groups[i].confidants = updatedGroup.confidants;

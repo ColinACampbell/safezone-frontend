@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:safezone_frontend/utils/location_util.dart';
-
+// TODO: Remove
 class LocationProvider extends ChangeNotifier
 {
   final LocationUtil _locationUtil;
