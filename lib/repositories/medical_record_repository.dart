@@ -14,4 +14,9 @@ class MedicalRecordRepository {
     List<dynamic> respBody = await serverClient.get("/medical-records/", token: token);
     return respBody.map((e) => MedicalRecord.fromJson(e)).toList();
   }
+
+  Future<List<MedicalRecord>> fetchRecordForUser(int userId, String token) async {
+    List<dynamic> respBody = await serverClient.get("/medical-records/$userId", token: token);
+    return respBody.map((e) => MedicalRecord.fromJson(e)).toList();
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
+import 'package:safezone_frontend/user/pages/group/confidant_screen.dart';
 
 class ConfidantCard extends ConsumerWidget {
   final Confidant _confidant;
@@ -14,10 +15,12 @@ class ConfidantCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onDoubleTap: () {
+      onTap: () {
         ref.read(groupsProvider).connectToGroup(_group.id);
-        Navigator.pushNamed(context, AddGeoFenceScreen.routeName,
-            arguments: {"user": _confidant.details, "group": _group});
+        Navigator.pushNamed(context, ConfidantScreen.routeName,
+            arguments: _confidant);
+        // Navigator.pushNamed(context, AddGeoFenceScreen.routeName,
+        //     arguments: {"user": _confidant.details, "group": _group});
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
@@ -30,7 +33,10 @@ class ConfidantCard extends ConsumerWidget {
         child: Row(
           children: [
             Container(
-              child: Icon(Icons.person, color: Colors.white,),
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
               width: 40,
               height: 40,
               decoration: const BoxDecoration(
