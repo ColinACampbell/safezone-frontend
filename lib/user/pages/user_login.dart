@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/user_tab.dart';
-import 'package:safezone_frontend/utils.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:workmanager/workmanager.dart';
 
 // TODO : Add form validation
@@ -233,15 +231,21 @@ class LoginState extends ConsumerState<UserLoginPage> {
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account?"),
+                    // TextButton(
+                    //   onPressed: () async {
+
+                    //   },
+                    //   child: Text("Send notif"),
+                    // ),
+                    Text(isInLoginState ? "Don't have an account?" : "Already have an account?"),
                     const SizedBox(width: 10),
-                    ElevatedButton(
+                    TextButton(
                       onPressed: () {
                         setState(() {
                           isInLoginState = !isInLoginState;
                         });
                       },
-                      child: const Text("Sign up"),
+                      child:  Text(isInLoginState ? "Sign up": "Login"),
                     ),
                   ],
                 )),

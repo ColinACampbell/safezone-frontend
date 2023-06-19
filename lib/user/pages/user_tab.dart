@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:isolate';
-
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/user/pages/group/user_groups.dart';
 import 'package:safezone_frontend/user/pages/user_home.dart';
 import 'package:safezone_frontend/user/pages/user_sos.dart';
-import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_button.dart';
 import 'package:safezone_frontend/widgets/app_text_field.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserTabPage extends ConsumerStatefulWidget {
   static const String route_name = "/user_tab_page";
@@ -29,8 +24,13 @@ class UserTabPageState extends ConsumerState {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
     });
+    Future.delayed(Duration.zero, () async {});
   }
 
   List<Widget> screens = [

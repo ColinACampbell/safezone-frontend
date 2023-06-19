@@ -1,6 +1,5 @@
-import 'dart:io';
 import 'dart:ui';
-
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/user.dart';
@@ -14,6 +13,16 @@ import 'package:workmanager/workmanager.dart';
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
+  AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'safe_zone_key1',
+          channelName: 'safe_zone_channel1',
+          channelDescription: 'description',
+        )
+      ],
+      debug: true);
   Workmanager().executeTask((String task, inputData) async {
     DartPluginRegistrant.ensureInitialized();
     if (task == "BACKGROUND_UPDATE_2") {

@@ -215,7 +215,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
                         );
                       } else {
                         return const Text(
-                            "Pleasee wait, fetching your location");
+                            "Please wait, fetching your location");
                       }
                     })
               ],

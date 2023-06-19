@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,7 +7,6 @@ import 'package:safezone_frontend/providers/providers.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:workmanager/workmanager.dart';
 
 class UserHomePage extends ConsumerStatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -16,14 +16,33 @@ class UserHomePage extends ConsumerStatefulWidget {
 
 // TODO: Check out to dispose this completely when the user changes page
 class _HomePageState extends ConsumerState<UserHomePage> {
-
-
   Timer? locationUpdateTimer;
 
   startListening(WebSocketChannel? groupChannel) {
     print("Started listening");
     locationUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       groupChannel!.sink.add("");
+      final memberLocations = ref.read(notificationProvider).membersLocations;
+      final members = memberLocations.keys.toList();
+
+      for (int i = 0; i < members.length; i++) {
+        final memberId = members[i];
+        if (ref
+            .read(notificationProvider)
+            .geoFenceFlags
+            .containsKey(memberId)) {
+          if (ref.read(notificationProvider).geoFenceFlags[memberId] == true) {
+            final memberLocation = memberLocations[memberId]; 
+            AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    id: 10,
+                    channelKey: 'safe_zone_key1',
+                    title: "${memberLocation!.name} is outside geofence!",
+                    body: "${memberLocation.name} is ${memberLocation.geoFenceDistance.round()} meters away from the center of geofence!"));
+            ref.read(notificationProvider).markGeofenceAlerted(memberId);
+          }
+        }
+      }
     });
   }
 
@@ -57,7 +76,7 @@ class _HomePageState extends ConsumerState<UserHomePage> {
           children: [
             Expanded(
               child: FutureBuilder(
-                  future:getPosition(), // TODO: Change
+                  future: getPosition(), // TODO: Change
                   builder: (context, snapshot) {
                     double initLat = 0, initLong = 0;
 
