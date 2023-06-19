@@ -49,20 +49,6 @@ class ConfidantCard extends ConsumerWidget {
                     style: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
-                  // const Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: const [
-                  //     Icon(
-                  //       Icons.location_on,
-                  //       size: 15,
-                  //     ),
-                  //     Text(
-                  //       "UWI, Mona",
-                  //       style: TextStyle(fontSize: 10),
-                  //     )
-                  //   ],
-                  // )
                 ],
               ),
             ))
