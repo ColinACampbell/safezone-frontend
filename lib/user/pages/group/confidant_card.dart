@@ -20,8 +20,8 @@ class ConfidantCard extends ConsumerWidget {
             arguments: {"user": _confidant.details, "group": _group});
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-        padding: EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+        padding: const EdgeInsets.all(10),
         decoration: !isLastCard
             ? const BoxDecoration(
                 border:
@@ -30,6 +30,7 @@ class ConfidantCard extends ConsumerWidget {
         child: Row(
           children: [
             Container(
+              child: Icon(Icons.person, color: Colors.white,),
               width: 40,
               height: 40,
               decoration: const BoxDecoration(
@@ -48,20 +49,20 @@ class ConfidantCard extends ConsumerWidget {
                     style: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Icon(
-                        Icons.location_on,
-                        size: 15,
-                      ),
-                      Text(
-                        "UWI, Mona",
-                        style: TextStyle(fontSize: 10),
-                      )
-                    ],
-                  )
+                  // const Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: const [
+                  //     Icon(
+                  //       Icons.location_on,
+                  //       size: 15,
+                  //     ),
+                  //     Text(
+                  //       "UWI, Mona",
+                  //       style: TextStyle(fontSize: 10),
+                  //     )
+                  //   ],
+                  // )
                 ],
               ),
             ))
