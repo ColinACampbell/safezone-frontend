@@ -9,16 +9,13 @@ class UserSOSPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-        child: ElevatedButton(
-            onPressed: () {
-              AwesomeNotifications().createNotification(
-                  content: NotificationContent(
-                      id: 10,
-                      channelKey: 'safe_zone_key1',
-                      title: "Sample notification",
-                      body: "What is up"));
-            },
-            child: Text("Hellow world")));
+    return Container(
+        child: Column(
+      children: [
+        Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: Image(image: AssetImage('assets/phone_sos.png')))
+      ],
+    ));
   }
 }
