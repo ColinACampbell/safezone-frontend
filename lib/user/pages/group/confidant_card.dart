@@ -18,7 +18,7 @@ class ConfidantCard extends ConsumerWidget {
       onTap: () {
         ref.read(groupsProvider).connectToGroup(_group.id);
         Navigator.pushNamed(context, ConfidantScreen.routeName,
-            arguments: _confidant);
+            arguments: {"confidant": _confidant, "group": _group});
         // Navigator.pushNamed(context, AddGeoFenceScreen.routeName,
         //     arguments: {"user": _confidant.details, "group": _group});
       },

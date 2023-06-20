@@ -6,7 +6,8 @@ class MedicalRecordCard extends StatelessWidget {
   final MedicalRecord _record;
   final bool isLastCard;
   bool showControls;
-  MedicalRecordCard(this._record, this.isLastCard, {Key? key, this.showControls = true})
+  MedicalRecordCard(this._record, this.isLastCard,
+      {Key? key, this.showControls = true})
       : super(key: key);
 
   @override
@@ -24,7 +25,10 @@ class MedicalRecordCard extends StatelessWidget {
                     Border(bottom: BorderSide(color: Colors.grey, width: .5)))
             : null,
         child: Row(
+
           children: [
+            if (!showControls)
+              const Icon(Icons.health_and_safety),
             Expanded(
                 child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
