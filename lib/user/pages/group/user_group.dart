@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:safezone_frontend/models/group.dart';
@@ -11,7 +10,6 @@ import 'package:safezone_frontend/user/pages/group/confidant_card.dart';
 import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/user/pages/group/user_add_confidant.dart';
 import 'package:safezone_frontend/utils/geo_locator.dart';
-import 'package:safezone_frontend/utils/location_util.dart';
 import 'package:safezone_frontend/widgets/app_bar.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -125,7 +123,7 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                             Container(
                               child: const Text(
                                 "My Confidants",
-                                style: const TextStyle(
+                                style:  TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -137,13 +135,14 @@ class UserGroupPageState extends ConsumerState<UserGroupPage> {
                                           context, GroupConfidants.routeName,
                                           arguments: group.id);
                                     },
-                                    child: Text("Show All")),
+                                    child: const Text("Show All")),
                               ],
                             )
                           ],
                         )),
                     Expanded(
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: group.confidants.length,
                         itemBuilder: (context, idx) {
                           return ConfidantCard(

@@ -50,17 +50,23 @@ class GroupProvider extends ChangeNotifier {
   }
 
   // TODO : Add from_time and to_time to the function as a param
-  Future<GeoRestriction> geofenceUser(
-      int groupId, int userId, double lat, double long, double radius, int fromTime, int toTime) {
-    return _groupRepository.geofenceUser(
-        groupId, userId, lat, long, radius, fromTime, toTime,_userProvider.currentUser!.token!);
+  Future<GeoRestriction> geofenceUser(int groupId, int userId, double lat,
+      double long, double radius, int fromTime, int toTime) {
+    return _groupRepository.geofenceUser(groupId, userId, lat, long, radius,
+        fromTime, toTime, _userProvider.currentUser!.token!);
+  }
+
+  Future<List<GeoRestriction>> fetchUserGeofence(int groupId, int userId) async {
+    print("Fetching now");
+    var ss = await _groupRepository.fetchGeofence(
+        groupId, userId, _userProvider.currentUser!.token!);
+      print(ss);
+      return ss;
   }
 
   Future<Group> addConfidant(int userId, int groupId, String role) async {
     var updatedGroup = await _groupRepository.addConfidant(
         userId, groupId, role, _userProvider.currentUser!.token!);
-
-    var oldGroup = groups.firstWhere((g) => g.id == groupId);
 
     for (int i = 0; i < groups.length; i++) {
       if (groups[i].id == updatedGroup.id) {

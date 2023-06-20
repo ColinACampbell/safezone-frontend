@@ -1,4 +1,3 @@
-import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/models/user.dart';
 import 'package:safezone_frontend/utils.dart';
 
