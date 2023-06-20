@@ -29,14 +29,15 @@ Map<String, WidgetBuilder> appRoutes = {
 class ServerClient {
   final httpClient = http.Client();
   bool isProd = false;
-  final baseURl = "localhost:8080"; //"safezone-backend-nneblk5eda-uc.a.run.app";
+  final baseURl =
+      "localhost:8080"; //"safezone-backend-nneblk5eda-uc.a.run.app";
   late String apiURL, socketURL;
 
   final header = {};
 
   ServerClient() {
     apiURL = isProd ? "https://$baseURl" : "http://$baseURl";
-    socketURL = isProd? "wss://$baseURl": "ws://$baseURl";
+    socketURL = isProd ? "wss://$baseURl" : "ws://$baseURl";
   }
 
   buildHeaders({String? token}) {
@@ -57,7 +58,8 @@ class ServerClient {
     return channel;
   }
 
-  Future<IOWebSocketChannel> connectToLocationsStreaming(String userToken) async {
+  Future<IOWebSocketChannel> connectToLocationsStreaming(
+      String userToken) async {
     final channel = IOWebSocketChannel.connect(
         Uri.parse('$socketURL/stream-group-locations/$userToken'),
         headers: {'Connection': 'upgrade', 'Upgrade': 'websocket'});
@@ -87,8 +89,8 @@ class ServerClient {
       print(resp.body);
       throw APIExecption(json.decode(resp.body)['detail']);
     }
-      
-    print("Body is  " +resp.body);
+
+    print("Body is  " + resp.body);
     return jsonDecode(resp.body);
   }
 
@@ -105,8 +107,9 @@ class ServerClient {
     return jsonDecode(resp.body);
   }
 
-  Future<bool> callHook(String hookname, Map<String,dynamic> data, String token) async {
-     var resp = await httpClient.post(
+  Future<bool> callHook(
+      String hookname, Map<String, dynamic> data, String token) async {
+    var resp = await httpClient.post(
       Uri.parse("$apiURL/webhook/$hookname"),
       headers: buildHeaders(token: token),
       body: json.encode(data),
@@ -114,7 +117,7 @@ class ServerClient {
 
     if (resp.statusCode >= 400) {
       return false;
-    } 
+    }
 
     return true;
   }
