@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
+import 'package:safezone_frontend/user/pages/group/confidant_screen.dart';
 import 'package:safezone_frontend/user/pages/group/group_confidants.dart';
 import 'package:safezone_frontend/user/pages/group/user_group.dart';
 import 'package:safezone_frontend/user/pages/medical_record/user_medical_records.dart';
@@ -21,7 +22,8 @@ Map<String, WidgetBuilder> appRoutes = {
   UserGroupPage.routeName: (context) => UserGroupPage(),
   GroupConfidants.routeName: (context) => GroupConfidants(),
   AddGeoFenceScreen.routeName: (context) => AddGeoFenceScreen(),
-  UserMedicalRecordsScreen.routeName: (context) => UserMedicalRecordsScreen()
+  UserMedicalRecordsScreen.routeName: (context) => UserMedicalRecordsScreen(),
+  ConfidantScreen.routeName : (context) => ConfidantScreen()
 };
 
 // TODO: Convert to singleton

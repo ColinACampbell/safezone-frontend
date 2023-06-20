@@ -28,4 +28,13 @@ class MedicalRecordProvider extends ChangeNotifier {
     notifyListeners();
     return records;
   }
+
+  Future<List<MedicalRecord>> fetchRecordForUser(int userId) async {
+    var newRecords = await _medicalRecordRepository
+        .fetchRecordForUser(userId,_userProvider.currentUser!.token!);
+    records = [];
+    records.addAll(newRecords);
+    notifyListeners();
+    return records;
+  }
 }

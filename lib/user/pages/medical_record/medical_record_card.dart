@@ -5,7 +5,9 @@ import 'package:safezone_frontend/utils.dart';
 class MedicalRecordCard extends StatelessWidget {
   final MedicalRecord _record;
   final bool isLastCard;
-  const MedicalRecordCard(this._record, this.isLastCard, {Key? key})
+  bool showControls;
+  MedicalRecordCard(this._record, this.isLastCard,
+      {Key? key, this.showControls = true})
       : super(key: key);
 
   @override
@@ -23,7 +25,10 @@ class MedicalRecordCard extends StatelessWidget {
                     Border(bottom: BorderSide(color: Colors.grey, width: .5)))
             : null,
         child: Row(
+
           children: [
+            if (!showControls)
+              const Icon(Icons.health_and_safety),
             Expanded(
                 child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -42,19 +47,20 @@ class MedicalRecordCard extends StatelessWidget {
                     _record.description,
                     style: TextStyle(fontSize: 13),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          color: accentColor,
-                          onPressed: () {},
-                          icon: const Icon(Icons.edit)),
-                      IconButton(
-                          color: accentColor,
-                          onPressed: () {},
-                          icon: const Icon(Icons.delete))
-                    ],
-                  ),
+                  if (showControls)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            color: accentColor,
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit)),
+                        IconButton(
+                            color: accentColor,
+                            onPressed: () {},
+                            icon: const Icon(Icons.delete))
+                      ],
+                    ),
                   SizedBox(height: 10)
                 ],
               ),
