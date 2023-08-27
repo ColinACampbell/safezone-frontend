@@ -1,5 +1,6 @@
+import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
@@ -23,11 +24,13 @@ class UserTabPageState extends ConsumerState {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      //ref.read(locationProvider).initLocationUtil();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
     });
+    Future.delayed(Duration.zero, () async {});
   }
 
   List<Widget> screens = [

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "632054043390",
+    "project_id": "safezone-final-notis",
+    "storage_bucket": "safezone-final-notis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632054043390:android:9705ff6e98ebcf15b0cbaf",
+        "android_client_info": {
+          "package_name": "com.example.safezone_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632054043390-lc03dt35indeakkhgqj7emn5i6mtc4j5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsUsfsh7pE49FNaPczcXyYv8b4HQMorTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632054043390-lc03dt35indeakkhgqj7emn5i6mtc4j5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "632054043390-0eth0jjgi1ad0ik7svh1big9fk0lsa8f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.testing.safezoneFrontend"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

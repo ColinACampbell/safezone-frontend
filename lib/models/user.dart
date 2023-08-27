@@ -41,5 +41,7 @@ class UserLocation {
   final double lat, lon;
   final int id;
   final String name;
-  UserLocation(this.id, this.name, this.lat, this.lon);
+  bool geoFlag = false;
+  double geoFenceDistance;
+  UserLocation(this.id, this.name, this.lat, this.lon,{this.geoFlag = false, this.geoFenceDistance  = 0});
 }

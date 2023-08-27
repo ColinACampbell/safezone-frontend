@@ -71,7 +71,7 @@ class _UserMedicalRecordsScreenState extends ConsumerState {
                   itemCount: medRecords.length,
                   itemBuilder: (context, idx) {
                     return MedicalRecordCard(
-                        medRecords[idx], medRecords.last == medRecords[idx]);
+                        medRecords[idx], true);
                   }))
         ],
       ),

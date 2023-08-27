@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/providers/providers.dart';
@@ -31,7 +30,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
                 padding: EdgeInsets.only(top: 50),
                 child: Text(
                   'Add Confidant',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0F3460),
@@ -39,7 +38,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
                 ),
               ),
               Text('Scan Barcode to add confidant $userId',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                       color: Color(0xFF0F3460),
@@ -65,6 +64,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
   }
 
   bool isNumeric(String s) {
+    // ignore: unnecessary_null_comparison
     if (s == null) {
       return false;
     }
@@ -102,7 +102,7 @@ class _AddConfidantPageState extends ConsumerState<AddConfidantPage> {
           }
         });
       });
-    } on PlatformException catch (e) {
+    } on PlatformException {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Looks like something went wrong")));
     }

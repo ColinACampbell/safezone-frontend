@@ -43,6 +43,13 @@ dependencies:
   simple_barcode_scanner: ^0.0.8
   geocoding: ^2.1.0
   workmanager: ^0.5.1
+  awesome_notifications: ^0.7.4+1
+  barcode_widget: ^2.0.1
+  #flutter_barcode_scanner: ^2.0.0
+  #mobile_scanner: ^1.0.0
+
+  
+
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/redalert.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

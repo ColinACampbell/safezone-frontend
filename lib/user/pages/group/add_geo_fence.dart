@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:safezone_frontend/models/exception.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/models/user.dart';
 import 'dart:math' as math;
-
 import 'package:safezone_frontend/providers/providers.dart';
+import 'package:safezone_frontend/widgets/map.dart';
 
 class AddGeoFenceScreen extends ConsumerStatefulWidget {
   static const String routeName = "/group_add_geofence_screen";
@@ -88,6 +87,11 @@ class _AddGeoFenceScreenState extends ConsumerState {
     final group = routeInfo['group'] as Group;
     final user = routeInfo['user'] as User;
 
+    final notificationContainer = ref.watch(notificationProvider);
+    var userLocation = notificationContainer.membersLocations[user.id];
+
+    //final broadcast = groupContainer.groupConnections[group.id]!;
+
     return Scaffold(
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -97,22 +101,7 @@ class _AddGeoFenceScreenState extends ConsumerState {
             FloatingActionButton(
                 child: const Icon(Icons.save),
                 onPressed: () {
-                  var centerMarker = geoFenceMarkers[0];
-                  try {
-                    ref.read(groupsProvider).geofenceUser(
-                        group.id,
-                        user.id,
-                        centerMarker.point.latitude,
-                        centerMarker.point.longitude,
-                        radiusInMeters);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text(" ${user.email} geofenced successfully")));
-                    Navigator.of(context).pop();
-                  } on APIExecption catch (e) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(e.message)));
-                  }
+                  buildAddTimeDialog(context, user, group);
                 }),
           const SizedBox(
             height: 20,
@@ -167,52 +156,195 @@ class _AddGeoFenceScreenState extends ConsumerState {
           Expanded(
             child: Stack(
               children: [
-                FlutterMap(
-                  options: MapOptions(
-                    onMapCreated: (controlelr) {},
-                    onPositionChanged: ((position, hasGesture) {
-                      zoomLevel = position.zoom!;
-                      if (geoFenceMarkers.isNotEmpty) {
-                        setState(() {
-                          scaledWidth = calcScaledWidth(
-                              pointWidth,
-                              position
-                                  .zoom!); // anytime the zoom changes we want to change the ratio of the zoom on the screen
+                FutureBuilder(
+                    future: Geolocator.getCurrentPosition(),
+                    builder: (context, snapshot) {
+                      double initLat = 0;
+                      double initLong = 0;
+                      if (snapshot.hasData) {
+                        Position p = snapshot.data as Position;
+                        initLat = p.latitude;
+                        initLong = p.longitude;
+                        return FlutterMap(
+                          options: MapOptions(
+                            onMapCreated: (controlelr) {},
+                            onPositionChanged: ((position, hasGesture) {
+                              zoomLevel = position.zoom!;
+                              if (geoFenceMarkers.isNotEmpty) {
+                                setState(() {
+                                  scaledWidth = calcScaledWidth(
+                                      pointWidth,
+                                      position
+                                          .zoom!); // anytime the zoom changes we want to change the ratio of the zoom on the screen
 
-                          for (int i = 0; i < geoFenceMarkers.length; i++) {
-                            var oldMarker = geoFenceMarkers[i];
-                            geoFenceMarkers[i] =
-                                createMarker(oldMarker.point, scaledWidth);
-                          }
-                        });
+                                  for (int i = 0;
+                                      i < geoFenceMarkers.length;
+                                      i++) {
+                                    var oldMarker = geoFenceMarkers[i];
+                                    geoFenceMarkers[i] = createMarker(
+                                        oldMarker.point, scaledWidth);
+                                  }
+                                });
+                              }
+                            }),
+                            onTap: (p, l) async {
+                              if (geoFenceMarkers.length < 2) {
+                                addMarker(l, scaledWidth);
+                              } else if (geoFenceMarkers.length == 2) {
+                                geoFenceMarkers.removeLast();
+                                addMarker(l, scaledWidth);
+                              }
+                            },
+                            center: LatLng(initLat, initLong),
+                            zoom: 17.0,
+                            maxZoom: 17,
+                          ),
+                          layers: [
+                            TileLayerOptions(
+                                urlTemplate:
+                                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                subdomains: ['a', 'b', 'c']),
+                            MarkerLayerOptions(markers: [
+                              ...geoFenceMarkers,
+                              if (userLocation !=
+                                  null) // show the user location on the map if they location is saved in the system
+                                buildLocationMarker(userLocation)
+                            ]),
+                            CircleLayerOptions(circles: circleMarkers)
+                          ],
+                        );
+                      } else {
+                        return const Text(
+                            "Please wait, fetching your location");
                       }
-                    }),
-                    onTap: (p, l) async {
-                      if (geoFenceMarkers.length < 2) {
-                        addMarker(l, scaledWidth);
-                      } else if (geoFenceMarkers.length == 2) {
-                        geoFenceMarkers.removeLast();
-                        addMarker(l, scaledWidth);
-                      }
-                    },
-                    center: LatLng(17.898418, -76.906672),
-                    zoom: 17.0,
-                    maxZoom: 17,
-                  ),
-                  layers: [
-                    TileLayerOptions(
-                        urlTemplate:
-                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c']),
-                    MarkerLayerOptions(markers: geoFenceMarkers),
-                    CircleLayerOptions(circles: circleMarkers)
-                  ],
-                )
+                    })
               ],
             ),
           )
         ],
       ),
+    );
+  }
+
+  int convertToUTC(int hour, int offset) {
+    // Calculate the adjusted hour in UTC
+    print(hour);
+    print(offset);
+    int utcHour = (hour - offset) % 24;
+    if (utcHour < 0) {
+      utcHour += 24;
+    }
+
+    // Return the UTC hour
+    return utcHour;
+  }
+
+  int fromTime = -1;
+  int toTime = -1;
+  TimeOfDay? selectedFromTime;
+  TimeOfDay? selectedToTime;
+  buildAddTimeDialog(BuildContext context, User user, Group group) {
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Geofence'),
+          content: StatefulBuilder(builder: (context, setState) {
+            return Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(children: [
+                    selectedFromTime == null
+                        ? const Text("Select From Hour")
+                        : Text(
+                            "${selectedFromTime!.hour}:${selectedFromTime!.minute}"),
+                    TextButton(
+                        onPressed: () {
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) {
+                            setState(() {
+                              selectedFromTime = value;
+                              fromTime = selectedFromTime!.hour;
+                            });
+                          });
+                        },
+                        child: Text("Select Time"))
+                  ]),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(children: [
+                    toTime == -1
+                        ? Text("Select To Hour")
+                        : Text(
+                            "${selectedToTime!.hour}:${selectedToTime!.minute}"),
+                    TextButton(
+                        onPressed: () {
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) {
+                            setState(() {
+                              selectedToTime = value;
+                              toTime = selectedToTime!.hour;
+                            });
+                          });
+                        },
+                        child: Text("Select Time"))
+                  ])
+                ],
+              ),
+            );
+          }),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Sumbit'),
+              onPressed: () {
+                var centerMarker = geoFenceMarkers[0];
+                try {
+                  var now = DateTime.now();
+                  var timezoneOffset = now.timeZoneOffset.inHours;
+                  ref.read(groupsProvider).geofenceUser(
+                      group.id,
+                      user.id,
+                      centerMarker.point.latitude,
+                      centerMarker.point.longitude,
+                      radiusInMeters,
+                      convertToUTC(fromTime, timezoneOffset),
+                      convertToUTC(toTime,
+                          timezoneOffset)); // convert the time to utc on submit
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(" ${user.email} geofenced successfully")));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } on APIExecption catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.message)));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
