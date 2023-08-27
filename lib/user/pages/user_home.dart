@@ -10,6 +10,7 @@ import 'package:safezone_frontend/utils/geo_locator.dart';
 import 'package:safezone_frontend/widgets/map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:developer' as developer;
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class UserHomePage extends ConsumerStatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -104,11 +105,23 @@ class _HomePageState extends ConsumerState<UserHomePage> {
                     padding: EdgeInsets.all(16.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UserSOSPage()),
-                        );
+                        _createNotification();
+                        showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Color(0xFF3FC4C2),
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 400,
+                                  child: Column(children: [
+                                    Center(
+                                      child: Image.asset(
+                                        'assets/redalert.gif',
+                                        height: 324,
+                                        width: 324,
+                                      ),
+                                    )
+                                  ]));
+                            });
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.red,
@@ -174,4 +187,16 @@ class _HomePageState extends ConsumerState<UserHomePage> {
   showCoordinates(lat, long) {
     return Text("Lat is $lat, Long is $long");
   }
+}
+
+Future<void> _createNotification() async {
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: 1,
+      channelKey: 'safe_zone_key1',
+      title: 'SOS ALERT',
+      body: 'Your confidant is having a medical emergency',
+      notificationLayout: NotificationLayout.Default,
+    ),
+  );
 }
