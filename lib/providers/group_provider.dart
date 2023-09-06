@@ -87,7 +87,8 @@ class GroupProvider extends ChangeNotifier {
       groups = [...tempGroups];
     }
 
-    final filteredGroups = tempGroups.where((group) => group.name.contains(lookupName)).toList();
+    lookupName = lookupName.toLowerCase();
+    final filteredGroups = tempGroups.where((group) => group.name.toLowerCase().contains(lookupName)).toList();
     groups = [...filteredGroups];
     notifyListeners();
   }
