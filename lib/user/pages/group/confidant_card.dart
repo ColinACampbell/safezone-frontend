@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safezone_frontend/models/group.dart';
 import 'package:safezone_frontend/providers/providers.dart';
-import 'package:safezone_frontend/user/pages/group/add_geo_fence.dart';
 import 'package:safezone_frontend/user/pages/group/confidant_screen.dart';
 
 class ConfidantCard extends ConsumerWidget {
@@ -33,15 +32,15 @@ class ConfidantCard extends ConsumerWidget {
         child: Row(
           children: [
             Container(
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
               width: 40,
               height: 40,
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              child: const Icon(
+                Icons.person,
+                color: Colors.white,
               ),
             ),
             Expanded(
