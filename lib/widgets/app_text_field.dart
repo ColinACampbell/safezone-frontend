@@ -5,7 +5,8 @@ class AppTextField extends StatelessWidget {
   bool isPassword = false;
   bool autoFocus = false;
   bool isMultiLine = false;
-  void Function(String?) onSaved;
+  void Function(String?)? onSaved;
+  void Function(String?)? onChanged;
 
   AppTextField(
       {Key? key,
@@ -13,12 +14,14 @@ class AppTextField extends StatelessWidget {
       this.isPassword = false,
       this.autoFocus = false,
       this.isMultiLine = false,
-      required this.onSaved})
+      this.onChanged,
+      this.onSaved})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       maxLines: isMultiLine ? 10 : 1,
       autofocus: autoFocus,
       onSaved: onSaved,

@@ -34,7 +34,9 @@ class UserGroupsState extends ConsumerState<UserGroupsPage> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: AppTextField(hintText: "Search", onSaved: (val) {}),
+          child: AppTextField(hintText: "Search For Group", onChanged: (val) {
+            ref.read(groupsProvider).searchForGroups(val!);
+          }),
         ),
         Expanded(
           child: RefreshIndicator(
@@ -74,7 +76,7 @@ class GroupList extends ConsumerWidget {
             Container(
               decoration: const BoxDecoration(
                   borderRadius:
-                      const BorderRadius.all(const Radius.circular(50)),
+                      BorderRadius.all(const Radius.circular(50)),
                   color: Colors.red),
               width: 40,
               height: 40,
@@ -107,7 +109,7 @@ class GroupList extends ConsumerWidget {
             },
           );
         } else {
-          return Text("Loading");
+          return const Text("Loading");
         }
       },
     );

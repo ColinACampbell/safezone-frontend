@@ -12,6 +12,7 @@ class GroupProvider extends ChangeNotifier {
   final UserProvider _userProvider;
 
   List<Group> groups = [];
+  List<Group> tempGroups = []; // use when searching
   Map<int, WebSocketChannel> groupConnections = {};
 
   GroupProvider(this._groupRepository, this._userProvider);
@@ -49,7 +50,6 @@ class GroupProvider extends ChangeNotifier {
     return group;
   }
 
-  // TODO : Add from_time and to_time to the function as a param
   Future<GeoRestriction> geofenceUser(int groupId, int userId, double lat,
       double long, double radius, int fromTime, int toTime) {
     return _groupRepository.geofenceUser(groupId, userId, lat, long, radius,
@@ -76,6 +76,20 @@ class GroupProvider extends ChangeNotifier {
     }
 
     return updatedGroup;
+  }
+
+
+  void searchForGroups(String lookupName) {
+
+    if (tempGroups.isEmpty) {
+      tempGroups = [...groups];
+    } else {
+      groups = [...tempGroups];
+    }
+
+    final filteredGroups = tempGroups.where((group) => group.name.contains(lookupName)).toList();
+    groups = [...filteredGroups];
+    notifyListeners();
   }
 
   Stream<dynamic> getGroupConnectionAsBroadCast(int groupId) {

@@ -78,7 +78,6 @@ class ServerClient {
 
   Future<dynamic> post(String endPoint, Map<String, dynamic> body,
       {String? token}) async {
-    print("$apiURL$endPoint");
 
     var resp = await httpClient.post(
       Uri.parse("$apiURL$endPoint"),
@@ -88,11 +87,8 @@ class ServerClient {
 
     if (resp.statusCode >= 400) {
       // ignore: avoid_print
-      print(resp.body);
       throw APIExecption(json.decode(resp.body)['detail']);
     }
-
-    print("Body is  " + resp.body);
     return jsonDecode(resp.body);
   }
 
