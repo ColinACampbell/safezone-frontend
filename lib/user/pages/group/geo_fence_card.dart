@@ -55,7 +55,7 @@ class GeofenceCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            locationName!,
+                            locationName,
                             style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -64,7 +64,7 @@ class GeofenceCard extends StatelessWidget {
                           ),
                           Text(
                             "${_restriction.radius.round() * 2} meters wide",
-                            style: TextStyle(fontSize: 13),
+                            style: const TextStyle(fontSize: 13),
                           ),
                           const SizedBox(height: 10)
                         ],
@@ -78,7 +78,7 @@ class GeofenceCard extends StatelessWidget {
             return const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [const Text("Please wait, fetching location name")],
+              children: [Text("Please wait, fetching location name")],
             );
           }
         });
